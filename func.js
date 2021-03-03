@@ -1,5 +1,8 @@
 exports.randomBarcode = ()=>{
   const rand = Array.from(String(Math.round(Math.random() * Math.pow(10,12)))).map(_=>Number(_));
+  if(rand.length !== 12){
+    return "";
+  }
   let calc = 0;
   for(let i=0;i<12;i++){
     calc += (i%2 === 0) ? rand[i] : rand[i]*3;
