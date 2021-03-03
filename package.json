@@ -1,0 +1,15 @@
+{
+  "name": "festival-admin",
+  "version": "1.0.0",
+  "description": "絶対にPublicにしないでください。プロジェクトが無断で変更されたり、個人情報が不正に閲覧されたりする可能性があります。",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "firebase-admin": "^9.5.0"
+  }
+}
