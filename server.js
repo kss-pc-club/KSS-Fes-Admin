@@ -7,6 +7,12 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+const admin = require('firebase-admin');
+const payServiceAccount = require('./pay/service_key.json');
+const monitorServiceAccount = require('./monitor/service_key.json');
+const payApp = admin.initializeApp({credential: admin.credential.cert(payServiceAccount)}, 'pay');
+const monitorApp = admin.initializeApp({credential: admin.credential.cert(monitorServiceAccount)}, 'monitor')
+
 const notAllowed = [
 	"node_modules/",
 	"src/",
@@ -48,10 +54,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.post('/pay/barcodeRegenerate', async (req,res)=>{
-  const admin = require('firebase-admin');
-  const serviceAccount = require('./pay/service_key.json');
-  admin.initializeApp({credential: admin.credential.cert(serviceAccount)});
-  const db = admin.firestore();
+  const db = payApp.firestore();
   let bCode = "";
   let isLoop = true;
   while(isLoop){
