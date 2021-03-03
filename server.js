@@ -21,7 +21,7 @@ const notAllowed = [
 	"webpack.config.js",
 ];
 
-app.use((req,res)=>{
+app.get('/*',(req,res)=>{
 	console.log(req.path);
 
 	if(notAllowed.includes(req.path)){
@@ -65,8 +65,8 @@ app.post('/pay/barcodeRegenerate', async (req,res)=>{
   const uid = req.body.uid;
   const user = db.collection('users').doc(uid);
   const dbResponse = await user.set({barcode: bCode},{merge: true});
-  console.log(dbResponse);
-  res.sendStatus(200);
+  console.log(bCode,uid,dbResponse);
+  res.sendStatus(204);
 })
 
 app.listen(port, ()=>console.log(`Listening on ${port}`));
