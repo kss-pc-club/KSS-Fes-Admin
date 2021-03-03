@@ -27,6 +27,8 @@ const notAllowed = [
 	"webpack.config.js",
 ];
 
+app.listen(port, ()=>console.log(`Listening on ${port}`));
+
 app.get('/*',(req,res)=>{
 	console.log(req.path);
 
@@ -45,31 +47,52 @@ app.get('/*',(req,res)=>{
 	res.sendFile(path.join(__dirname,req.path));
 })
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 app.use((err,req,res,next)=>{
 	console.error(err);
 	res.status(err.statusCode).sendFile(path.join(__dirname,`err/${err.statusCode}.html`));
 })
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-
 app.post('/pay/barcodeRegenerate', async (req,res)=>{
   const db = payApp.firestore();
+
+  const uid = req.body.uid;
+  const user = db.collection('users').doc(uid);
+  if(!(await user.get()).exists){
+    // User does not exist
+    res.sendStatus(400);
+    return;
+  }
+
   let bCode = "";
   let isLoop = true;
   while(isLoop){
     const barcode = randomBarcode();
+    if(!barcode){ continue; }
     const snapshot = await db.collection('users').where('barcode','==',barcode).get();
     if(snapshot.empty){
       isLoop = false;
       bCode = barcode;
     }
   }
-  const uid = req.body.uid;
-  const user = db.collection('users').doc(uid);
-  const dbResponse = await user.set({barcode: bCode},{merge: true});
-  console.log(bCode,uid,dbResponse);
+  await user.set({barcode: bCode},{merge: true});
   res.sendStatus(204);
 })
 
-app.listen(port, ()=>console.log(`Listening on ${port}`));
+app.post('/pay/userInit', async (req,res)=>{
+  const db = payApp.firestore();
+  const uid = req.body.uid;
+  const user = db.collection('users').doc(uid)
+  if((await user.get()).exists){
+    res.sendStatus(400);
+    return;
+  }
+  await user.set({
+    barcode: "0000000000000",
+    money: 0,
+    history: [],
+  });
+  res.sendStatus(204)
+})
