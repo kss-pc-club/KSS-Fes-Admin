@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
+	<title>KSS Proceeds</title>
+	<link rel="stylesheet" href="./css/style.css">
+	<script src="./bundle.js"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://repos.a01sa01to.com/commonFiles/material/radio.css">
+</head>
+<body>
+	<header><p id="cls"></p></header>
+	<main>
+		<p id="name">Loading...</p>
+		<p id="total" data-amount="">Loading...</p>
+		<div class="setting">
+			<div class="material radio">
+				<input type="radio" name="set" checked value="proceed">
+				<label for="set">売上金額を表示</label>
+			</div>
+			<div class="material radio">
+				<input type="radio" name="set" value="amount">
+				<label for="set">売上個数を表示</label>
+			</div>
+			<div class="material radio">
+				<input type="radio" name="set" value="people">
+				<label for="set">購入人数を表示</label>
+			</div>
+		</div>
+		<div class="chart">
+			<canvas id="chart" width="300" height="300"></canvas>
+		</div>
+		<div class="items"></div>
+	</main>
+</body>
+</html>
