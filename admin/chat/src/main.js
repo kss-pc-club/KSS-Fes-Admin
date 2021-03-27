@@ -4,7 +4,11 @@ const $ = require('jquery')
 function log(msg) {
   const date = new Date()
   $('div.log').prepend(
-    `<p>[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}]<br>${msg}</p>`
+    `<p>[${String(date.getHours()).padStart(2, '0')}:${String(
+      date.getMinutes()
+    ).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}.${String(
+      date.getMilliseconds()
+    ).padStart(3, '0')}]<br>${msg}</p>`
   )
 }
 const month = [
@@ -30,11 +34,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   })
   $('.type button').on('click', function () {
-    if (!$('.type input').val()) {
-      return
-    }
     const id = $('.clsCont.showing').attr('data-cls')
     const body = $('.type input').val()
+    if (!body || !id) {
+      return
+    }
     let data = 'A '
     const d = new Date()
     let dateFormat = `${
