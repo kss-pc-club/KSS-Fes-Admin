@@ -18,8 +18,11 @@ window.addEventListener('DOMContentLoaded', () => {
         )
 
         const w = new WebSocket(
-          `wss://${location.host}/ws/kss-chat-${e.ws.replace('-', '')}`
+          `wss://kss-pc-club-websocket.herokuapp.com/kss-admin-chat/${e.ws}`
         )
+        setInterval(() => {
+          w.send('[Keeping Connection... Ignore this message...]')
+        }, 30000)
         w.addEventListener('open', () => {
           log(`WebSocket${e.ws} Open`)
         })
@@ -31,9 +34,9 @@ window.addEventListener('DOMContentLoaded', () => {
           if (_.hasClass('showing')) {
             __.text('')
             const d = new Date()
-            let dateFormat = `${
-              month[d.getMonth()]
-            } ${d.getDate()} | ${d.getHours()}:${d.getMinutes()}`
+            let dateFormat = `${month[d.getMonth()]} ${d.getDate()} | ${String(
+              d.getHours()
+            ).padEnd(2, '0')}:${String(d.getMinutes()).padEnd(2, '0')}`
             $('main div.chat div.history').append(
               `<div class="msgCont"><div class="rec"><p class="msg">${k.data}</p><p class="time">${dateFormat}</p></div></div>`
             )

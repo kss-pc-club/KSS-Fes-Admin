@@ -38,8 +38,6 @@ const notAllowed = [
   'webpack.config.js',
 ]
 
-const server = app.listen(port, () => console.log(`Listening on ${port}`))
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
@@ -56,7 +54,11 @@ app.get('/management/chat/data/get', (req, res) => {
       ret.push({ sender: a[0], time: a[1], body: a[2] })
     }
   })
-  res.json(ret)
+  if (ret.length) {
+    res.json(ret)
+  } else {
+    res.json({})
+  }
 })
 
 app.get('/admin/chat/data', (req, res) => {
@@ -142,6 +144,13 @@ app.get('/*', (req, res) => {
       return
     }
   }
+  if (req.path.endsWith('/')) {
+    const rewritePath = path.join(__dirname, `${req.path}index.html`)
+    if (fs.existsSync(rewritePath)) {
+      res.sendFile(rewritePath)
+      return
+    }
+  }
   res.sendFile(path.join(__dirname, req.path))
 })
 
@@ -151,53 +160,6 @@ app.use((err, req, res, next) => {
     .status(err.statusCode)
     .sendFile(path.join(__dirname, `err/${err.statusCode}.html`))
 })
-
-let list = {}
-server.on('upgrade', (req, socket, head) => {
-  const path = url.parse(req.url).pathname
-  if (!path.startsWith('/ws')) {
-    return
-  }
-  console.log(path)
-  if (list[path]) {
-    const wss = list[path]
-    wss.handleUpgrade(req, socket, head, (ws) => {
-      wss.emit('connection', ws, req)
-    })
-  } else {
-    const wss = new Server({ noServer: true })
-    wss.on('connection', (ws) => {
-      console.log('Client Connected')
-      ws.on('message', (data) => {
-        wss.clients.forEach((cli) => {
-          if (cli !== ws) {
-            cli.send(data)
-          }
-        })
-      })
-      ws.on('close', () => console.log('Client disconnected'))
-    })
-    wss.handleUpgrade(req, socket, head, (ws) => {
-      wss.emit('connection', ws, req)
-    })
-    list[path] = wss
-  }
-})
-setInterval(() => {
-  for (const key in list) {
-    if (list.hasOwnProperty(key)) {
-      const e = list[key]
-      let _ = 0
-      e.clients.forEach(() => {
-        _++
-      })
-      console.log(key, _)
-      if (_ === 0) {
-        delete list[key]
-      }
-    }
-  }
-}, 5000)
 
 app.post('/pay/barcodeRegenerate', async (req, res) => {
   const db = payApp.firestore()
@@ -390,3 +352,5 @@ app.post('/admin/chat/write', (req, res) => {
 })
 
 app.use(auth)
+
+app.listen(port, () => console.log(`Listening on ${port}`))

@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
   $('main .logo p span.cls').text(cls)
 
   const ws = new WebSocket(
-    `wss://${location.host}/ws/kss-chat-${cls.replace('-', '')}`
+    `wss://kss-pc-club-websocket.herokuapp.com/kss-admin-chat/${cls}`
   )
 
   const month = [
@@ -42,6 +42,15 @@ window.addEventListener('DOMContentLoaded', () => {
     scrollBtm()
   })
 
+  setInterval(() => {
+    ws.send('[Keeping Connection... Ignore this message...]')
+  }, 30000)
+
+  ws.addEventListener('close', () => {
+    alert('接続が切断されました。「OK」を押すと再読み込みします。')
+    location.reload()
+  })
+
   document.querySelector('.type input').addEventListener('keyup', (e) => {
     if (e.keyCode === 13) {
       $('.type button').trigger('click')
@@ -54,9 +63,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const body = $('.type input').val()
     let data = 'B '
     const d = new Date()
-    let dateFormat = `${
-      month[d.getMonth()]
-    } ${d.getDate()} | ${d.getHours()}:${d.getMinutes()}`
+    let dateFormat = `${month[d.getMonth()]} ${d.getDate()} | ${String(
+      d.getHours()
+    ).padEnd(2, '0')}:${String(d.getMinutes()).padEnd(2, '0')}`
     data += encodeURIComponent(`${dateFormat}`) + ' ' + encodeURIComponent(body)
 
     fetch('./data/write', {
