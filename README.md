@@ -6,8 +6,8 @@
 
 ## 開発方法
 1. Clone
-2. `npm install`
-3. `npm start`
+2. `yarn install`
+3. `yarn start`
 
 ## 貢献したい方
 [CONTRIBUTING.md](./CONTRIBUTING.md) を見てください
