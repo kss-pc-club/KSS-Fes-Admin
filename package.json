@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "yarn -s run firebase serve",
-    "husky:prepare": "yarn -s run husky install"
+    "husky:prepare": "yarn -s run husky install",
+    "build": "webpack"
   },
   "lint-staged": {
     "*.js": [
@@ -22,10 +23,12 @@
     "jquery": "^3.6.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-tsdoc": "^0.2.14",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
