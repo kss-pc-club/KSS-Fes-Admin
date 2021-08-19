@@ -8,6 +8,8 @@ unchangeable_files=(
   ^pay/userInit.html
   ^pay/barcodeRegenerate.html
   ^service_key.json
+  ^.eslintrc.js
+  ^tsconfig.json
 )
 
 containsElement () {
