@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン</title>
+  <script src="./bundle.js"></script>
+  <link rel="stylesheet" href="./css/pages/login.css">
+</head>
+<body class="text-center">
+  <header></header>
+  <main class="form-signin">
+    <div class="toastContainer top-0 end-0 p-3 position-absolute">
+      <div class="toast d-flex align-items-center text-white bg-danger visually-hidden" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">メールアドレス、またはパスワードが違います。ユーザーが存在しないのかもしれません。</div>
+        <button type="button" class="btn-close btn-close-white ms-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    <form action="#">
+      <h1 class="h3 mb-3 fw-normal">ログインしてください</h1>
+      <label for="inputEmail" class="visually-hidden">メールアドレス</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="メールアドレス" required autofocus>
+      <label for="inputPassword" class="visually-hidden">パスワード</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="パスワード" required>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">ログイン</button>
+      <p class="mt-5 mb-3 text-muted">&copy; KSS PC Club</p>
+    </form>
+  </main>
+</body>
+</html>
