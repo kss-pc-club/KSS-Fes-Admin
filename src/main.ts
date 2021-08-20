@@ -1,6 +1,9 @@
+//----- メインの処理 -----//
+
 import 'bootstrap'
 import './commonFilesLoad'
 import './login'
+import './style'
 
 import $ from 'jquery'
 
