@@ -10,7 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
       .map(
         (e) => new Toast(e, { animation: true, autohide: true, delay: 3000 })
       )[0]
-    $('form').on('submit', function () {
+    $('form').on('submit', function (e) {
+      e.preventDefault()
       $('form button').attr('disabled', 'disabled')
       const email = $('#inputEmail').val() as string
       const pass = $('#inputPassword').val() as string
@@ -19,7 +20,6 @@ window.addEventListener('DOMContentLoaded', () => {
         .signInWithEmailAndPassword(email, pass)
         .then((cred) => {
           console.log(cred)
-          const user = cred.user
         })
         .catch((err) => {
           console.error(err)
