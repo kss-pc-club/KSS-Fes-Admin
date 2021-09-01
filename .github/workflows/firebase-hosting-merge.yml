@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Save Service Account
+        run: echo ${KSS_PAY_SECRET} | base64 -d > ./functions/lib/service_key.json
+        env:
+          KSS_PAY_SECRET: ${{ secrets.KSS_PAY_SECRET }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
