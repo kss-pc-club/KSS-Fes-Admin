@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "yarn -s run firebase serve",
     "husky:prepare": "yarn -s run husky install",
-    "build": "webpack"
+    "build": "webpack",
+    "serve": "firebase emulators:start --only hosting",
+    "emulator": "firebase emulators:start"
   },
   "lint-staged": {
     "*.ts": [

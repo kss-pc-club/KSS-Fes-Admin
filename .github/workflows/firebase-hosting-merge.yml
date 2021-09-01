@@ -12,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Save Service Account
-        run: echo ${KSS_PAY_SECRET} | base64 -d > ./functions/lib/service_key.json
+        run: |
+          echo ${KSS_PAY_SECRET} | base64 -d > ./functions/lib/service_key.json
+          echo ${KSS_PAY_SECRET} | base64 -d > ./functions/src/service_key.json
         env:
           KSS_PAY_SECRET: ${{ secrets.KSS_PAY_SECRET }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
