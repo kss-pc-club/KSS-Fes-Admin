@@ -1,7 +1,8 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 
-import ServiceAccount from './service_key.json'
+// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
+const ServiceAccount = require('./service_key.json')
 
 admin.initializeApp({ credential: admin.credential.cert(ServiceAccount) })
 
