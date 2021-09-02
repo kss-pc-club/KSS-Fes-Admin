@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
+	<title>KSS Cashier</title>
+	<link rel="stylesheet" href="/css/pages/cashier/style.css">
+	<script src="/bundle.js"></script>
+</head>
+<body>
+	<header></header>
+	<main>
+		<div class="container showing" id="menu">
+			<div class="childContainer">
+				<h2>注文されたメニューを選択</h2>
+			</div>
+			<footer>
+				<span></span>
+				<p class="sum">0</p>
+				<button id="next" data-next="method" class="btn btn-outline-secondary">Next: 決済方法の選択&nbsp;<i class="bi bi-chevron-right"></i></button>
+			</footer>
+		</div>
+		<div class="container" id="method">
+			<div class="childContainer">
+				<h2>決済方法の選択</h2>
+				<div class="methodContainer">
+					<button class="btn btn-outline-primary" id="cash">現金</button>
+					<button class="btn btn-outline-primary" id="pay">KSS Pay</button>
+				</div>
+			</div>
+			<footer>
+				<button id="prev" data-next="menu" class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i>&nbsp;Prev: メニュー選択</button>
+				<button id="next" disabled class="btn btn-outline-secondary">Next: 決済手続き&nbsp;<i class="bi bi-chevron-right"></i></i></button>
+			</footer>
+		</div>
+		<div class="container" id="cash">
+			<div class="childContainer">
+				<h2>現金支払い</h2>
+				<p id="sum"></p>
+				<div class="rec input-group mb-3"><input type="number" class="form-control" aria-label="受け取った額" min="0" name="rec" maxlength="6" value="0" autofocus><span class="input-group-text">円受け取り</span></div>
+				<div class="ret input-group mb-3"><input type="number" class="form-control" aria-label="その場合のお釣り" name="ret" min="0" readonly value="0" maxlength="6" max="999999"><span class="input-group-text">円のお釣り</span></div>
+				<button class="btn btn-outline-primary" disabled>決済を保存して終了</button>
+			</div>
+			<footer>
+				<button id="prev" data-next="method" class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i>&nbsp;Prev: 決済方法の選択</button>
+				<button id="next" disabled class="btn btn-outline-secondary">Next: 決済完了&nbsp;<i class="bi bi-chevron-right"></i></button>
+			</footer>
+		</div>
+		<div class="container" id="pay">
+			<div class="childContainer">
+				<h2>KSS Pay支払い</h2>
+				<p id="sum"></p>
+				<div class="code form-floating">
+					<input type="text" name="code" id="code" min="1000000000000" max="9999999999999" class="form-control" placeholder="1234567890123" autofocus>
+					<label for="code">バーコード読み取り</label>
+				</div>
+				<p style="margin: 16px;">どうしても読み込めない場合には、バーコードの番号を直接入力してください。<br>※絶対に間違えないように！</p>
+				<button class="btn btn-outline-primary">決済</button>
+			</div>
+			<footer>
+				<button id="prev" data-next="method" class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i>&nbsp;Prev: 決済方法の選択</button>
+				<button id="next" disabled class="btn btn-outline-secondary">Next: 決済完了&nbsp;<i class="bi bi-chevron-right"></i></button>
+			</footer>
+		</div>
+		<div class="container" id="ok">
+			<div class="childContainer">
+				<h2>決済完了</h2>
+				<p>完了しました。</p>
+				<p><a href="javascript:location.reload()">次の会計を記録する</a></p>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

@@ -8,6 +8,10 @@ header{
   color: #fff;
   text-align: left;
   background-color: var(--bs-primary);
+
+  span#cls{
+    font-size: unset;
+  }
 }
 
 main{

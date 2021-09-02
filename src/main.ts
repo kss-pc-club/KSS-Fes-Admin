@@ -7,10 +7,19 @@ import './style'
 
 import $ from 'jquery'
 
-import { firebase } from './firebase'
+import { classInfo } from './classInfo'
+import { firebase, ifClassInfoLoaded } from './firebase'
 import { sleep } from './functions'
 
+if (location.pathname === '/cashier/') {
+  import('./cashier/main')
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+  ifClassInfoLoaded(() => {
+    $('header span#cls').text(classInfo.name)
+  })
+
   if (location.pathname === '/') {
     document.querySelector('a#logout')?.addEventListener('click', () => {
       if (confirm('ログアウトしますか？')) {
