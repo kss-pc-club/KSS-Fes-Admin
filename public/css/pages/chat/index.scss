@@ -3,7 +3,7 @@ main{
   grid-template-areas: "logo" "chat" "type";
   grid-template-rows: auto 1fr 48px;
   gap: 8px;
-  height: calc(100vh - 32px);
+  height: calc(100vh - 5em);
   padding: 16px;
 
   .logo{

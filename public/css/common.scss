@@ -5,9 +5,6 @@ html, body{
 }
 
 header{
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   padding: 0.5em 1em;
   font-size: 1.5em;
@@ -22,7 +19,6 @@ header{
 
 main{
   padding: 1em;
-  padding-top: 4.5em;
 }
 
 div.loader_container{
