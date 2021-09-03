@@ -3,13 +3,16 @@
 
 # 変更されたら困るファイルを記述
 unchangeable_files=(
-  ^monitor/service_key.json
-  ^pay/service_key.json
-  ^pay/userInit.html
-  ^pay/barcodeRegenerate.html
-  ^service_key.json
+  ^.github/workflows/
+  ^functions/lib/service_key.json
+  ^functions/src/service_key.json
+  ^functions/tsconfig.json
   ^.eslintrc.js
+  ^.firebaserc
+  ^firebase.json
+  ^stylelint.config.js
   ^tsconfig.json
+  ^webpack.config.js
 )
 
 containsElement () {
