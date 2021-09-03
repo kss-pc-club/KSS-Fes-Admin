@@ -21,6 +21,7 @@ type type_classInfo = {
 }
 
 type type_classProceeds = {
+  admin: boolean
   customers: number
   menus: {
     amount: number

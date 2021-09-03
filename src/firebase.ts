@@ -56,12 +56,15 @@ auth.onAuthStateChanged(async (user) => {
           amount: proItem.amount,
         }
       })
+      classInfo.admin = proceedsData.admin
     }
     classInfoLoadedList.forEach((f) => f())
     isClassInfoLoaded = true
     console.log(classInfo)
-
-    if (location.pathname === '/login') {
+    if (location.pathname.startsWith('/admin/') && !classInfo.admin) {
+      location.pathname = '/'
+      return
+    } else if (location.pathname === '/login') {
       location.pathname = '/'
       return
     }
