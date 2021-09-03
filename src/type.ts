@@ -1,3 +1,5 @@
+import { firebase } from './firebase'
+
 type type_VoidFunc = () => void
 
 type type_boughtList = {
@@ -48,6 +50,17 @@ type type_forRecord = {
   list: type_boughtList[]
 }
 
+type type_chatSaveData = {
+  fromAdmin: boolean
+  message: string
+  time: firebase.firestore.Timestamp
+}
+type type_chatAllData = {
+  lastUpdate: firebase.firestore.Timestamp
+  name: string
+  history: type_chatSaveData[]
+}
+
 type type_func_readPay = {
   error: boolean
   canBuy: boolean
@@ -69,4 +82,6 @@ export {
   type_forRecord,
   type_func_readPay,
   type_func_buyPay,
+  type_chatSaveData,
+  type_chatAllData,
 }

@@ -13,9 +13,12 @@ import { sleep } from './functions'
 
 if (location.pathname === '/cashier/') {
   import('./cashier/main')
-}
-if (location.pathname === '/proceeds/') {
+} else if (location.pathname === '/proceeds/') {
   import('./proceeds/main')
+} else if (location.pathname === '/chat/') {
+  import('./chat/main')
+} else if (location.pathname === '/admin/chat/') {
+  import('./admin/chat/main')
 }
 
 window.addEventListener('DOMContentLoaded', () => {
