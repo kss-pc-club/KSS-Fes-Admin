@@ -2,16 +2,11 @@ import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
 import { ifClassInfoLoaded } from '../firebase'
-
-type listType = {
-  name: string
-  price: number
-  amount: number
-}
+import { type_boughtList } from '../type'
 
 const data = {
   sum: 0,
-  list: [] as listType[],
+  list: [] as type_boughtList[],
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -52,4 +47,4 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 })
 
-export { data, listType }
+export { data }

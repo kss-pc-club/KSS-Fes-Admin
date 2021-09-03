@@ -2,7 +2,7 @@ import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
 import { firebase } from '../firebase'
-import { listType } from './menu'
+import { type_classProceeds, type_forRecord } from '../type'
 
 const sleep = (t: number): Promise<void> => new Promise((r) => setTimeout(r, t))
 
@@ -18,32 +18,11 @@ const anim = async (before: any, after: any, isR2L = true): Promise<void> => {
   $(after).find('footer').fadeIn(500)
 }
 
-type RecordType = {
-  isPay: boolean
-  payAt: string
-  payId: string | null
-  sum: number
-  time: Date
-  list: listType[]
-}
-
-type classProceedsType = {
-  customers: number
-  menus: {
-    amount: number
-    customers: number
-    icon: string
-    name: string
-    price: number
-  }[]
-  total: number
-}
-
-const RecordPayment = async (data: RecordType): Promise<void> => {
+const RecordPayment = async (data: type_forRecord): Promise<void> => {
   const db = firebase.firestore()
   await db.collection('payment_log').add(data)
   const db_data = await db.collection('class_proceeds').doc(classInfo.uid).get()
-  const db_menu = (db_data.data() as classProceedsType).menus
+  const db_menu = (db_data.data() as type_classProceeds).menus
   db_menu.forEach((item) => {
     const dt = data.list.filter((l) => l.name === item.name)[0]
     if (dt.amount >= 1) {

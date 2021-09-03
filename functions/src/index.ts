@@ -1,6 +1,8 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 
+import { type_buyPayReqData, type_readPayReqData } from './type'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
 const ServiceAccount = require('./service_key.json')
 
@@ -16,13 +18,8 @@ admin.initializeApp({ credential: admin.credential.cert(ServiceAccount) })
 
 const returnError = (msg: string) => ({ error: true, message: msg })
 
-type readPayDataType = {
-  barcode: string
-  cost: number
-}
-
 export const readPay = functions.https.onCall(
-  async (data: readPayDataType, context) => {
+  async (data: type_readPayReqData, context) => {
     if (!context.auth?.uid) {
       return returnError('not logged in')
     }
@@ -56,16 +53,8 @@ export const readPay = functions.https.onCall(
   }
 )
 
-type buyPayDataType = {
-  uid: string
-  items: { name: string; price: number; amount: number }[]
-  name: string
-  cost: number
-  time: string
-}
-
 export const buyPay = functions.https.onCall(
-  async (data: buyPayDataType, context) => {
+  async (data: type_buyPayReqData, context) => {
     if (!context.auth?.uid) {
       return returnError('not logged in')
     }
