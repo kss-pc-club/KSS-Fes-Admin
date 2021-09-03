@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
+
+html, body{
+  font-family: "Noto Sans Japanese", var(--bs-font-sans-serif);
+}
+
 header{
   position: fixed;
   top: 0;
