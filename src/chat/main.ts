@@ -3,28 +3,7 @@ import $ from 'jquery'
 import { classInfo } from '../classInfo'
 import { firebase, ifClassInfoLoaded } from '../firebase'
 import { type_chatAllData, type_chatSaveData } from '../type'
-
-function scrollBtm() {
-  const e = document.querySelector('main .chat .history')
-  if (e) {
-    e.scrollTo(0, e.scrollHeight - e.clientHeight)
-  }
-}
-
-const month = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-]
+import { formatDate, scrollBtm } from './func'
 
 window.addEventListener('DOMContentLoaded', () => {
   ifClassInfoLoaded(async () => {
@@ -36,9 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < chatData.length; i++) {
       const e = chatData[i]
       const time = e.time.toDate()
-      const dateFormat = `${
-        month[time.getMonth()]
-      } ${time.getDate()} | ${time.getHours()}:${time.getMinutes()}`
+      const dateFormat = formatDate(time)
       $('main div.chat div.history').append(
         `<div class="msgCont"><div class="${
           e.fromAdmin ? 'rec' : 'send'
@@ -55,9 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ws.addEventListener('message', (e) => {
       const d = new Date()
-      const dateFormat = `${
-        month[d.getMonth()]
-      } ${d.getDate()} | ${d.getHours()}:${d.getMinutes()}`
+      const dateFormat = formatDate(d)
 
       $('main div.chat div.history').append(
         `<div class="msgCont"><div class="rec"><p class="msg">${String(
@@ -92,9 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const msg = $('.type input').val()!.toString()
       const d = new Date()
-      const dateFormat = `${month[d.getMonth()]} ${d.getDate()} | ${String(
-        d.getHours()
-      ).padEnd(2, '0')}:${String(d.getMinutes()).padEnd(2, '0')}`
+      const dateFormat = formatDate(d)
 
       const saveData: type_chatSaveData = {
         fromAdmin: false,
