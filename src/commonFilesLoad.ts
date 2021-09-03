@@ -10,7 +10,15 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch('header.html')
     .then(async (res) => {
       const header = document.querySelector('header')
-      if (header) header.innerHTML = await res.text()
+      if (res.ok && header) {
+        header.innerHTML = await res.text()
+      } else {
+        fetch('/header.html')
+          .then(async (res) => {
+            if (header) header.innerHTML = await res.text()
+          })
+          .catch(console.error)
+      }
     })
     .catch(console.error)
 })
