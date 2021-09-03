@@ -14,6 +14,9 @@ import { sleep } from './functions'
 if (location.pathname === '/cashier/') {
   import('./cashier/main')
 }
+if (location.pathname === '/proceeds/') {
+  import('./proceeds/main')
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   ifClassInfoLoaded(() => {

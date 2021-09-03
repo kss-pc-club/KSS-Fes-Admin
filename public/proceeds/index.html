@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
+	<title>古河中等けやき祭 売上確認システム</title>
+	<script src="/bundle.js"></script>
+</head>
+<body>
+  <div style="position: fixed;top: 0;left: 0;z-index: 1;width: 100vw;height: 100vh;background-color: #fff;" class="loader_container"></div>
+  <div class="loader_container"><div class="loader"></div></div>
+	<header></header>
+	<main>
+		<p id="name">Loading...</p>
+		<p id="total" data-amount="">Loading...</p>
+		<div class="setting">
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input" id="proceeds" name="set" checked value="proceeds">
+				<label for="proceeds" class="form-check-label">売上金額を表示</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input" id="amount" name="set" value="amount">
+				<label for="amount" class="form-check-label">売上個数を表示</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input" id="customers" name="set" value="customers">
+				<label for="customers" class="form-check-label">購入人数を表示</label>
+			</div>
+		</div>
+		<div class="chart">
+			<canvas id="chart" width="300" height="300"></canvas>
+		</div>
+		<div class="items"></div>
+	</main>
+</body>
+</html>
