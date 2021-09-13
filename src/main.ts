@@ -21,8 +21,9 @@ if (location.pathname === '/cashier/') {
   import('./monitor/main')
 } else if (location.pathname === '/admin/chat/') {
   import('./admin/chat/main')
+} else if (location.pathname === '/admin/pay_charge/') {
+  import('./admin/pay_charge/main')
 }
-
 window.addEventListener('DOMContentLoaded', () => {
   onClassInfoLoaded(() => {
     $('header span#cls').text(classInfo.name)

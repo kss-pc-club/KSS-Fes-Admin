@@ -1,7 +1,11 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 
-import { type_buyPayReqData, type_readPayReqData } from './type'
+import {
+  type_buyPayReqData,
+  type_chargePayReqData,
+  type_readPayReqData,
+} from './type'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
 const ServiceAccount = require('./service_key.json')
@@ -87,6 +91,46 @@ export const buyPay = functions.https.onCall(
             item: itemDisplayText,
             amount: totalAmount,
             cost: Number(data.cost),
+          }),
+        },
+        { merge: true }
+      )
+    return { error: false, message: 'ok' }
+  }
+)
+
+export const chargePay = functions.https.onCall(
+  async (data: type_chargePayReqData, context) => {
+    if (!context.auth?.uid) {
+      return returnError('not logged in')
+    }
+    const db = admin.firestore()
+    if (!data.barcode || !data.chargeAmount || !data.time) {
+      return returnError('invalid request')
+    }
+    const snapshot = await db
+      .collection('users')
+      .where('barcode', '==', data.barcode)
+      .get()
+    if (snapshot.empty) {
+      return returnError('user not exist')
+    } else if (snapshot.size > 1) {
+      return returnError('multiple users')
+    }
+    await db
+      .collection('users')
+      .doc(snapshot.docs[0].id)
+      .set(
+        {
+          money: admin.firestore.FieldValue.increment(
+            Number(data.chargeAmount)
+          ),
+          history: admin.firestore.FieldValue.arrayUnion({
+            time: admin.firestore.Timestamp.fromDate(new Date(data.time)),
+            place: 'KSS Pay チャージ',
+            item: `${data.chargeAmount}円分のチャージ、`,
+            amount: 1,
+            cost: Number(data.chargeAmount),
           }),
         },
         { merge: true }

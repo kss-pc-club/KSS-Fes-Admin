@@ -10,4 +10,10 @@ type type_buyPayReqData = {
   cost: number
   time: string
 }
-export { type_readPayReqData, type_buyPayReqData }
+
+type type_chargePayReqData = {
+  barcode: string
+  chargeAmount: number
+  time: string
+}
+export { type_readPayReqData, type_buyPayReqData, type_chargePayReqData }

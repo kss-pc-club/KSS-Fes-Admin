@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KSS Pay Charger</title>
+  <script src="/bundle.js"></script>
+</head>
+<body>
+  <div style="position: fixed;top: 0;left: 0;z-index: 1;width: 100vw;height: 100vh;background-color: #fff;" class="loader_container"></div>
+  <div class="loader_container"><div class="loader"></div></div>
+  <header></header>
+  <main class="text-center">
+    <div class="container">
+      <div class="input-group input-group-lg mb-3">
+        <span class="input-group-text">バーコード番号</span>
+        <input type="text" class="form-control" aria-label="チャージ額" placeholder="123456789128" required>
+      </div>
+      <div class="input-group input-group-lg mb-3">
+        <span class="input-group-text">チャージ金額</span>
+        <span class="input-group-text">￥</span>
+        <input type="number" class="form-control" aria-label="チャージ金額" placeholder="100" required min="0" max="100000">
+      </div>
+      <button class="btn btn-outline-primary btn-lg" id="charge">チャージする</button>
+    </div>
+  </main>
+</body>
+</html>
