@@ -1,6 +1,13 @@
+//----- Admin/chat で用いる関数 -----//
+
 import $ from 'jquery'
 
 import { formatDate, month, scrollBtm } from '../../chat/func'
+
+/**
+ * ログを残します
+ * @param msg - ログ
+ */
 function log(msg: string) {
   const date = new Date()
   $('div.log').prepend(

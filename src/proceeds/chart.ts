@@ -1,3 +1,5 @@
+//----- グラフの初回ロード -----//
+
 import { Chart, registerables } from 'chart.js'
 import $ from 'jquery'
 
@@ -5,6 +7,9 @@ import { colors, menuData } from './dataGet'
 
 Chart.register(...registerables)
 
+/**
+ * グラフの初回描画を行います
+ */
 const ChartFirstDraw = (): void => {
   const ctx = document.querySelector('canvas')?.getContext('2d')
   if (ctx) {

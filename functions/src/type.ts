@@ -1,8 +1,12 @@
+//----- Cloud Functions で用いる型の定義 -----//
+
+// readPayのリクエストデータ
 type type_readPayReqData = {
   barcode: string
   cost: number
 }
 
+// buyPayのリクエストデータ
 type type_buyPayReqData = {
   uid: string
   items: { name: string; price: number; amount: number }[]
@@ -11,6 +15,7 @@ type type_buyPayReqData = {
   time: string
 }
 
+// chargePayのリクエストデータ
 type type_chargePayReqData = {
   barcode: string
   chargeAmount: number

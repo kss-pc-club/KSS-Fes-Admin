@@ -1,13 +1,26 @@
+//----- メニュー項目をHTMLに変換する処理 -----//
 import { type_menu } from '../type'
 import { availableIconsList } from './availableIcons'
 
+// 使えるアイコンのリスト
 let available_icons = ''
 for (const key in availableIconsList) {
   if (availableIconsList.hasOwnProperty(key)) {
     available_icons += `<li><a href="#" class="dropdown-item" data-icon="${key}"><img src="https://monitor.festival.kss-pc.club/icons/${key}.png"> ${availableIconsList[key]}</a></li>`
   }
 }
+
+// ステータス         営業中    休憩中     終了
 const statusColor = ['green', 'yellow', 'red']
+const statusFood = ['op', 'sh', 'so']
+const statusNotFood = ['no', 'pa', 'en']
+
+/**
+ * メニュー項目をHTMLに変換します
+ * @param item - メニュー項目
+ * @param idx - メニュー項目のindex
+ * @returns 変換されたHTML
+ */
 const itemElem = (item: type_menu, idx: number) => `
 <div class="input-group mt-3" data-idx="${idx}">
   <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="iconSelect">アイコン <img src="https://monitor.festival.kss-pc.club/icons/${
@@ -36,9 +49,12 @@ const itemElem = (item: type_menu, idx: number) => `
 </div>
 `
 
-const statusFood = ['op', 'sh', 'so']
-const statusNotFood = ['no', 'pa', 'en']
-
+/**
+ * メニュー項目から待ち時間モニターのプレビューのHTMLに変換します
+ * @param item - メニュー項目
+ * @param isFood - 食販かどうか
+ * @returns 変換されたHTML
+ */
 const previewItemElem = (item: type_menu, isFood: boolean) => `
 <div><img src="https://monitor.festival.kss-pc.club/icons/${
   item.icon

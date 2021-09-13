@@ -1,3 +1,5 @@
+//----- メインの処理 -----//
+
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
@@ -10,12 +12,14 @@ import {
 import { itemElem, previewItemElem } from './itemsMenu'
 
 window.addEventListener('DOMContentLoaded', () => {
+  // メニューの変更と文化祭の開始・終了時刻をここに保管しておく
   let menu_changes: type_menu[] = []
   const festival_duration: type_FestivalDuration_date = {
     start: new Date(),
     end: new Date(),
   }
 
+  // 文化祭の開始・終了時刻を取得し、変更があれば自動で更新
   firebase
     .firestore()
     .collection('festival_duration')
@@ -26,11 +30,17 @@ window.addEventListener('DOMContentLoaded', () => {
       festival_duration.end = data.end.toDate()
     })
 
+  /**
+   * 今は文化祭が始まる前か返します
+   */
   const isNowFestivalBefore = () => {
     const d = new Date()
     return festival_duration.start > d
   }
 
+  /**
+   * 待ち時間モニターのプレビューを表示します
+   */
   const generatePreview = () => {
     $('.previewsection p.cls').text(classInfo.name)
     $('.previewsection p.shop').text(classInfo.shop_name)
@@ -47,22 +57,20 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  /**
+   * メニュー項目が変更されたかどうかのEventListenerを加えます
+   */
   const ItemsAddEventListeners = () => {
-    console.log('hogehoge')
-    console.log(
-      $('.itemsContainer'),
-      $('.itemsContainer .input-group'),
-      $('.itemsContainer .input-group .dropdown-icon'),
-      $('.itemsContainer .input-group .dropdown-icon li'),
-      $('.itemsContainer .input-group .dropdown-icon li a')
-    )
+    // アイコン変更
     $('.itemsContainer .input-group .dropdown-icon li a')
-      .off('click')
+      .off('click') // 一度EventListenerを解除しないと、ItemsAddEventListeners関数がまた呼び出された際に二重で以下の処理が行われてしまう
       .on('click', function () {
+        // 文化祭が始まる前のみ変更可能
         if (!isNowFestivalBefore()) {
           alert('アイコンの変更は文化祭開始前のみ可能です。')
           return
         }
+
         const iconName = String($(this).attr('data-icon'))
         const idx = Number($(this).parents('.input-group').attr('data-idx'))
         $(this)
@@ -74,26 +82,36 @@ window.addEventListener('DOMContentLoaded', () => {
         menu_changes[idx].icon = iconName
         generatePreview()
       })
+
+    // 商品名変更
     $('.itemsContainer .input-group input[type=text]')
       .off('change')
       .on('change', function () {
+        // 文化祭が始まる前のみ変更可能
         if (!isNowFestivalBefore()) {
           alert('商品名の変更は文化祭開始前のみ可能です。')
           return
         }
+
         const idx = Number($(this).parents('.input-group').attr('data-idx'))
         menu_changes[idx].name = String($(this).val())
       })
+
+    // 値段変更
     $('.itemsContainer .input-group input[type=number]')
       .off('change')
       .on('change', function () {
+        // 文化祭が始まる前のみ変更可能
         if (!isNowFestivalBefore()) {
           alert('値段の変更は文化祭開始前のみ可能です。')
           return
         }
+
         const idx = Number($(this).parents('.input-group').attr('data-idx'))
         menu_changes[idx].price = Number($(this).val())
       })
+
+    // ステータス変更
     $('.itemsContainer .input-group .dropdown-status li a')
       .off('click')
       .on('click', function () {
@@ -109,17 +127,23 @@ window.addEventListener('DOMContentLoaded', () => {
         menu_changes[idx].status = status
         generatePreview()
       })
+
+    // メニュー削除
     $('.itemsContainer .input-group button#removeItem')
       .off('click')
       .on('click', function () {
+        // 文化祭が始まる前のみ変更可能
         if (!isNowFestivalBefore()) {
           alert('削除は文化祭開始前のみ可能です。')
           return
         }
+
         if (confirm('削除しますか？')) {
           const idx = Number($(this).parents('.input-group').attr('data-idx'))
           $(this).parents('.input-group').remove()
           menu_changes.splice(idx, 1)
+
+          // 何もなくなるなら「不明なアイテム」を追加
           if (menu_changes.length === 0) {
             menu_changes.push({
               name: '不明なアイテム',
@@ -152,29 +176,41 @@ window.addEventListener('DOMContentLoaded', () => {
       .collection('class_proceeds')
       .doc(classInfo.uid)
 
+    // 取りあえず現時点でのメニューを保存しておく
     menu_changes = classInfo.menus
 
+    // 店名変更時
     $('input[name=shop]').on('input', function () {
       classInfo.shop_name = String($(this).val())
       generatePreview()
     })
+
+    // 待ち時間変更時
     $('select[name=time]').on('change', function () {
       classInfo.time = String($(this).val())
       generatePreview()
     })
+
+    // 食販かどうか変更
     $('input[name=isFood]').on('change', function () {
       classInfo.isFood = Boolean($(this).prop('checked'))
       generatePreview()
     })
 
+    // メニュー追加
     $('.leftContainer button#add').on('click', function () {
+      // 文化祭が始まる前のみ変更可能
       if (!isNowFestivalBefore()) {
         alert('追加は文化祭開始前のみ可能です。')
         return
       }
+      // メニューは5つまで追加可能
       if (menu_changes.length >= 5) {
+        alert('メニューは5つまで追加できます')
         return
       }
+
+      // 初期状態は「不明なアイテム」
       menu_changes.push({
         name: '不明なアイテム',
         icon: 'unknown',
@@ -183,18 +219,25 @@ window.addEventListener('DOMContentLoaded', () => {
         customers: 0,
         price: 0,
       })
+
+      // 画面に表示
       $('.itemsContainer').append(
         itemElem(menu_changes[menu_changes.length - 1], menu_changes.length - 1)
       )
+
+      // 5つ目なら、もう追加できなくする
       if (menu_changes.length >= 5) {
         $('button#add').attr('disabled', 'disabled')
       }
       ItemsAddEventListeners()
       generatePreview()
     })
+
+    // 更新ボタンが押された
     $('button[type=submit]').on('click', async function () {
       $(this).attr('disabled', 'disabled')
       try {
+        // データベース更新
         await info_db.update({
           isFood: classInfo.isFood,
           menus: menu_changes.map((item) => ({
@@ -205,6 +248,8 @@ window.addEventListener('DOMContentLoaded', () => {
           name: classInfo.shop_name,
           time: classInfo.time,
         })
+
+        // 文化祭前なら、文化祭前にしか更新できないほうも更新する
         if (isNowFestivalBefore()) {
           await proc_db.update({
             menus: menu_changes.map((item) => ({
@@ -216,19 +261,24 @@ window.addEventListener('DOMContentLoaded', () => {
             })),
           })
         }
+
+        // メニュー上書き
         classInfo.menus = menu_changes
         alert('更新しました')
       } catch (e) {
+        // 何かエラーを吐いた時
         console.error(e)
         alert('更新に失敗しました')
       }
       $(this).removeAttr('disabled')
     })
 
+    // リセットボタン = 再読み込み
     $('button[type=reset]').on('click', () => location.reload())
     generatePreview()
   })
 
+  // クラス情報が更新されたとき、メニュー以外の情報を更新
   onClassInfoChanged(() => {
     $('h1').text(classInfo.name)
     $('input[name=shop]').val(classInfo.shop_name)
@@ -236,11 +286,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (classInfo.isFood) {
       $('input[name=isFood]').val('true').attr('checked', 'checked')
     }
-    $('.itemsContainer').children().remove()
-    for (let i = 0; i < menu_changes.length; i++) {
-      $('.itemsContainer').append(itemElem(menu_changes[i], i))
-    }
-
     if (menu_changes.length >= 5) {
       $('button#add').attr('disabled', 'disabled')
     }
@@ -248,6 +293,7 @@ window.addEventListener('DOMContentLoaded', () => {
     generatePreview()
   })
 
+  // 文化祭前チェックを毎秒しろ()
   setInterval(() => {
     if (!isNowFestivalBefore()) {
       $('.itemsContainer input[type=text]').attr('readonly', 'readonly')

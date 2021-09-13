@@ -1,3 +1,5 @@
+//----- メニューのデータ更新 -----//
+
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
@@ -16,24 +18,26 @@ const colors = ['#7e40f2', '#b4f240', '#405af2', '#f240b4', '#f27e40']
 window.addEventListener('DOMContentLoaded', () => {
   let isFirstLoad = true
   onClassInfoChanged(async () => {
+    // データベースからデータを読み込む
     const db = firebase.firestore()
     const data = (
       await db.collection('class_proceeds').doc(classInfo.uid).get()
     ).data() as type_classProceeds
-
-    $('p#name').text(`${classInfo.name} ${classInfo.shop_name}`)
-    $('p#total').text(Number(data.total).toLocaleString())
 
     const total = {
       amount: 0,
       proceeds: 0,
       customers: 0,
     }
-    $('div.items').children().remove()
     menuData.name.splice(0)
     menuData.amount.splice(0)
     menuData.proceeds.splice(0)
     menuData.customers.splice(0)
+
+    // 画面の情報を更新する
+    $('p#name').text(`${classInfo.name} ${classInfo.shop_name}`)
+    $('p#total').text(Number(data.total).toLocaleString())
+    $('div.items').children().remove()
     for (let i = 0; i < data.menus.length; i++) {
       const e = classInfo.menus[i]
       $('div.items').append(`
@@ -65,6 +69,9 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    /**
+     * 選択されているデータセットを表示します
+     */
     const showData = () => {
       const e = $('input[name=set]:checked').val()
       const total = Number($('p#total').attr(`data-${String(e)}`))

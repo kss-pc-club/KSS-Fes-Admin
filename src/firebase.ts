@@ -22,17 +22,25 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 firebase.functions().useEmulator('localhost', 5001)
 
+// クラスの情報が読み込まれた時の処理など
 const isClassInfoLoaded = false
 const classInfoLoadedList: type_VoidFunc[] = []
 const classInfoChangedList: type_VoidFunc[] = []
+/**
+ * クラスの情報が読み込まれたら実行します
+ * @param fn - 実行する関数
+ */
 const onClassInfoLoaded = (fn: type_VoidFunc) => {
-  // console.log(fn)
   if (isClassInfoLoaded) {
     fn()
   } else {
     classInfoLoadedList.push(fn)
   }
 }
+/**
+ * クラスの情報が変更されたら実行します
+ * @param fn - 実行する関数
+ */
 const onClassInfoChanged = (fn: type_VoidFunc) => {
   classInfoChangedList.push(fn)
 }
@@ -48,6 +56,10 @@ auth.onAuthStateChanged((user) => {
     let isFirstLoad = true
     let eitherLoaded = false
 
+    /**
+     * メニュー項目を構築します
+     * @returns 構築されたメニュー
+     */
     const constructMenus = () =>
       menus_info.map((item) => {
         const proItem = menus_proceeds.filter((i) => i.name === item.name)[0]
@@ -61,6 +73,9 @@ auth.onAuthStateChanged((user) => {
         }
       })
 
+    /**
+     * 読み込まれたか確認し、その時にあった処理を実行します
+     */
     const loadedCheckFn = () => {
       if (isFirstLoad) {
         if (eitherLoaded) {
@@ -77,6 +92,7 @@ auth.onAuthStateChanged((user) => {
       }
     }
 
+    // データベース読み込み
     db.collection('class_info')
       .doc(user.uid)
       .onSnapshot((doc) => {
@@ -96,6 +112,8 @@ auth.onAuthStateChanged((user) => {
         menus_proceeds = proceedsData.menus
         loadedCheckFn()
       })
+
+    // 権限的なリダイレクト処理
     onClassInfoLoaded(() => {
       if (location.pathname.startsWith('/admin/') && !classInfo.admin) {
         location.pathname = '/'
