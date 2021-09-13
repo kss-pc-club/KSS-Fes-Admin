@@ -78,6 +78,15 @@ type type_func_buyPay = {
   message: string
 }
 
+type type_FestivalDuration = {
+  start: firebase.firestore.Timestamp
+  end: firebase.firestore.Timestamp
+}
+type type_FestivalDuration_date = {
+  start: Date
+  end: Date
+}
+
 export {
   type_VoidFunc,
   type_boughtList,
@@ -91,4 +100,6 @@ export {
   type_func_buyPay,
   type_chatSaveData,
   type_chatAllData,
+  type_FestivalDuration,
+  type_FestivalDuration_date,
 }
