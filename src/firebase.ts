@@ -8,7 +8,13 @@ import firebase from 'firebase/app'
 
 import { classInfo } from './classInfo'
 import { firebaseConfig } from './firebaseConfig'
-import { type_classInfo, type_classProceeds, type_VoidFunc } from './type'
+import {
+  type_classInfo,
+  type_classInfoMenus,
+  type_classProceeds,
+  type_classProceedsMenus,
+  type_VoidFunc,
+} from './type'
 
 // Firebaseを初期化
 firebase.initializeApp(firebaseConfig)
@@ -18,7 +24,8 @@ firebase.functions().useEmulator('localhost', 5001)
 
 let isClassInfoLoaded = false
 const classInfoLoadedList: type_VoidFunc[] = []
-const ifClassInfoLoaded = (fn: type_VoidFunc) => {
+const classInfoChangedList: type_VoidFunc[] = []
+const onClassInfoLoaded = (fn: type_VoidFunc) => {
   // console.log(fn)
   if (isClassInfoLoaded) {
     fn()
@@ -26,27 +33,24 @@ const ifClassInfoLoaded = (fn: type_VoidFunc) => {
     classInfoLoadedList.push(fn)
   }
 }
+const onClassInfoChanged = (fn: type_VoidFunc) => {
+  classInfoChangedList.push(fn)
+}
 
 // ログイン状態が変更されたときの処理
-auth.onAuthStateChanged(async (user) => {
+auth.onAuthStateChanged((user) => {
   if (user) {
     // ログイン状態
 
     classInfo.uid = user.uid
-    const info = await db.collection('class_info').doc(user.uid).get()
-    const proceeds = await db.collection('class_proceeds').doc(user.uid).get()
-    if (info.exists && proceeds.exists) {
-      const infoData = info.data() as type_classInfo
-      const proceedsData = proceeds.data() as type_classProceeds
+    let menus_info: type_classInfoMenus = []
+    let menus_proceeds: type_classProceedsMenus = []
+    let isFirstLoad = true
+    let eitherLoaded = false
 
-      classInfo.name = infoData.class
-      classInfo.isFood = infoData.isFood
-      classInfo.shop_name = infoData.name
-      classInfo.time = infoData.time
-      classInfo.menus = infoData.menus.map((item) => {
-        const proItem = proceedsData.menus.filter(
-          (i) => i.name === item.name
-        )[0]
+    const constructMenus = () =>
+      menus_info.map((item) => {
+        const proItem = menus_proceeds.filter((i) => i.name === item.name)[0]
         return {
           icon: item.icon,
           name: item.name,
@@ -56,9 +60,42 @@ auth.onAuthStateChanged(async (user) => {
           amount: proItem.amount,
         }
       })
-      classInfo.admin = proceedsData.admin
+
+    const loadedCheckFn = () => {
+      if (isFirstLoad) {
+        if (eitherLoaded) {
+          classInfo.menus = constructMenus()
+          classInfoLoadedList.forEach((f) => f())
+          isFirstLoad = false
+        } else {
+          eitherLoaded = true
+        }
+      }
+      if (!isFirstLoad) {
+        classInfo.menus = constructMenus()
+        classInfoChangedList.forEach((f) => f())
+      }
     }
-    classInfoLoadedList.forEach((f) => f())
+
+    db.collection('class_info')
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        const infoData = doc.data() as type_classInfo
+        classInfo.name = infoData.class
+        classInfo.isFood = infoData.isFood
+        classInfo.shop_name = infoData.name
+        classInfo.time = infoData.time
+        menus_info = infoData.menus
+        loadedCheckFn()
+      })
+    db.collection('class_proceeds')
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        const proceedsData = doc.data() as type_classProceeds
+        classInfo.admin = proceedsData.admin
+        menus_proceeds = proceedsData.menus
+        loadedCheckFn()
+      })
     isClassInfoLoaded = true
     console.log(classInfo)
     if (location.pathname.startsWith('/admin/') && !classInfo.admin) {
@@ -82,4 +119,4 @@ auth.languageCode = 'ja'
 // ログイン状態の保持期間の設定
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error)
 
-export { firebase, auth, ifClassInfoLoaded }
+export { firebase, auth, onClassInfoLoaded, onClassInfoChanged }

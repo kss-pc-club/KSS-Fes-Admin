@@ -1,12 +1,12 @@
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase, ifClassInfoLoaded } from '../firebase'
+import { firebase, onClassInfoLoaded } from '../firebase'
 import { type_chatAllData, type_chatSaveData } from '../type'
 import { formatDate, scrollBtm } from './func'
 
 window.addEventListener('DOMContentLoaded', () => {
-  ifClassInfoLoaded(async () => {
+  onClassInfoLoaded(async () => {
     const chatDB = firebase.firestore().collection('chat').doc(classInfo.uid)
 
     const chatData = ((await chatDB.get()).data() as type_chatAllData).history

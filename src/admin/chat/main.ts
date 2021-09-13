@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-import { firebase, ifClassInfoLoaded } from '../../firebase'
+import { firebase, onClassInfoLoaded } from '../../firebase'
 import { type_chatAllData } from '../../type'
 import { formatDate, log, scrollBtm } from './func'
 
@@ -8,7 +8,7 @@ const ws: { [key: string]: WebSocket } = {}
 
 window.addEventListener('DOMContentLoaded', () => {
   log('DOMContent Loaded')
-  ifClassInfoLoaded(async () => {
+  onClassInfoLoaded(async () => {
     log('ClassInfoLoaded')
 
     const chatDB = firebase.firestore().collection('chat')

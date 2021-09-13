@@ -1,7 +1,7 @@
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase, ifClassInfoLoaded } from '../firebase'
+import { firebase, onClassInfoLoaded } from '../firebase'
 import { type_func_buyPay, type_func_readPay } from '../type'
 import { anim, RecordPayment } from './func'
 import { data } from './menu'
@@ -46,7 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
           } else {
             const userId = result.data.uid!
-            ifClassInfoLoaded(async () => {
+            onClassInfoLoaded(async () => {
               const time = new Date()
               await RecordPayment({
                 isPay: true,

@@ -8,28 +8,32 @@ type type_boughtList = {
   amount: number
 }
 
+type type_classInfoMenus = {
+  icon: string
+  name: string
+  status: number
+}[]
+
 type type_classInfo = {
   class: string
   isFood: boolean
-  menus: {
-    icon: string
-    name: string
-    status: number
-  }[]
+  menus: type_classInfoMenus
   name: string
   time: string
 }
 
+type type_classProceedsMenus = {
+  amount: number
+  customers: number
+  icon: string
+  name: string
+  price: number
+}[]
+
 type type_classProceeds = {
   admin: boolean
   customers: number
-  menus: {
-    amount: number
-    customers: number
-    icon: string
-    name: string
-    price: number
-  }[]
+  menus: type_classProceedsMenus
   total: number
 }
 
@@ -77,7 +81,9 @@ type type_func_buyPay = {
 export {
   type_VoidFunc,
   type_boughtList,
+  type_classInfoMenus,
   type_classInfo,
+  type_classProceedsMenus,
   type_classProceeds,
   type_menu,
   type_forRecord,

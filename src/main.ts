@@ -8,7 +8,7 @@ import './style'
 import $ from 'jquery'
 
 import { classInfo } from './classInfo'
-import { firebase, ifClassInfoLoaded } from './firebase'
+import { firebase, onClassInfoLoaded } from './firebase'
 import { sleep } from './functions'
 
 if (location.pathname === '/cashier/') {
@@ -17,12 +17,14 @@ if (location.pathname === '/cashier/') {
   import('./proceeds/main')
 } else if (location.pathname === '/chat/') {
   import('./chat/main')
+} else if (location.pathname === '/monitor/') {
+  import('./monitor/main')
 } else if (location.pathname === '/admin/chat/') {
   import('./admin/chat/main')
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  ifClassInfoLoaded(() => {
+  onClassInfoLoaded(() => {
     $('header span#cls').text(classInfo.name)
   })
 

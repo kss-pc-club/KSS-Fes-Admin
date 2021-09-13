@@ -1,7 +1,7 @@
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { ifClassInfoLoaded } from '../firebase'
+import { onClassInfoLoaded } from '../firebase'
 import { type_boughtList } from '../type'
 
 const data = {
@@ -10,7 +10,7 @@ const data = {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  ifClassInfoLoaded(() => {
+  onClassInfoLoaded(() => {
     for (let i = 0; i < classInfo.menus.length; i++) {
       const e = classInfo.menus[i]
       const item = document.createElement('div')
