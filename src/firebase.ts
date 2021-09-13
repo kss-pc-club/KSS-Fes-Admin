@@ -22,7 +22,7 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 firebase.functions().useEmulator('localhost', 5001)
 
-let isClassInfoLoaded = false
+const isClassInfoLoaded = false
 const classInfoLoadedList: type_VoidFunc[] = []
 const classInfoChangedList: type_VoidFunc[] = []
 const onClassInfoLoaded = (fn: type_VoidFunc) => {
@@ -96,15 +96,18 @@ auth.onAuthStateChanged((user) => {
         menus_proceeds = proceedsData.menus
         loadedCheckFn()
       })
-    isClassInfoLoaded = true
-    console.log(classInfo)
-    if (location.pathname.startsWith('/admin/') && !classInfo.admin) {
-      location.pathname = '/'
-      return
-    } else if (location.pathname === '/login') {
-      location.pathname = '/'
-      return
-    }
+    onClassInfoLoaded(() => {
+      if (location.pathname.startsWith('/admin/') && !classInfo.admin) {
+        location.pathname = '/'
+        return
+      } else if (location.pathname === '/' && classInfo.admin) {
+        location.pathname = '/admin/'
+        return
+      } else if (location.pathname === '/login') {
+        location.pathname = '/'
+        return
+      }
+    })
   } else {
     // 非ログイン状態
     if (location.pathname !== '/login') {

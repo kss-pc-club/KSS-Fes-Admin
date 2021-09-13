@@ -35,6 +35,13 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     })
   }
+  if (location.pathname === '/admin/') {
+    document.querySelector('a#logout')?.addEventListener('click', () => {
+      if (confirm('ログアウトしますか？')) {
+        firebase.auth().signOut().catch(console.error)
+      }
+    })
+  }
 })
 
 window.addEventListener('load', async () => {
