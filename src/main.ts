@@ -45,13 +45,11 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-window.addEventListener('load', () => {
-  onClassInfoLoaded(async () => {
-    await sleep(1000)
-    // 読み込み終了かつクラス情報読み込みしたらメインコンテンツを表示&ローダーを消す
-    $('header,main,footer').fadeIn(700)
-    $('div.loader_container').fadeOut(700)
-    await sleep(700)
-    $('div.loader_container').remove()
-  })
+window.addEventListener('load', async () => {
+  await sleep(3000)
+  // 読み込み終了したらメインコンテンツを表示&ローダーを消す
+  $('header,main,footer').fadeIn(700)
+  $('div.loader_container').fadeOut(700)
+  await sleep(700)
+  $('div.loader_container').remove()
 })
