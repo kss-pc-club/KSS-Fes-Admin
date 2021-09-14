@@ -179,6 +179,12 @@ window.addEventListener('DOMContentLoaded', () => {
     // 取りあえず現時点でのメニューを保存しておく
     menu_changes = classInfo.menus
 
+    // 初回クラス情報読み込み時のみ、メニュー情報を更新する
+    $('.itemsContainer').children().remove()
+    for (let i = 0; i < menu_changes.length; i++) {
+      $('.itemsContainer').append(itemElem(menu_changes[i], i))
+    }
+
     // 店名変更時
     $('input[name=shop]').on('input', function () {
       classInfo.shop_name = String($(this).val())
