@@ -1,8 +1,9 @@
 //----- KSS Payでの支払い処理 -----//
+import { httpsCallable } from 'firebase/functions'
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase } from '../firebase'
+import { cloudFunctions } from '../firebase'
 import { type_func_buyPay, type_func_readPay } from '../type'
 import { anim, RecordPayment } from './func'
 import { data } from './menu'
@@ -22,13 +23,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // ReadPayを呼び出し（Ref: /functions/src/index.ts）
-    firebase
-      .functions()
-      .httpsCallable('readPay')({
-        barcode: e.val(),
-        cost: data.sum,
-      })
-      .then(async (result: { data: type_func_readPay }) => {
+    httpsCallable(
+      cloudFunctions,
+      'readPay'
+    )({
+      barcode: e.val(),
+      cost: data.sum,
+    })
+      .then(async (res) => {
+        const result = res as { data: type_func_readPay }
         // エラーを吐いたとき
         if (result.data.error) {
           $('.container#pay .childContainer button').removeAttr('disabled')
@@ -67,16 +70,18 @@ window.addEventListener('DOMContentLoaded', () => {
             list: data.list,
           })
 
-          firebase
-            .functions()
-            .httpsCallable('buyPay')({
-              name: classInfo.name,
-              items: data.list,
-              uid: userId,
-              cost: data.sum,
-              time: time,
-            })
-            .then((result: { data: type_func_buyPay }) => {
+          httpsCallable(
+            cloudFunctions,
+            'buyPay'
+          )({
+            name: classInfo.name,
+            items: data.list,
+            uid: userId,
+            cost: data.sum,
+            time: time,
+          })
+            .then((res) => {
+              const result = res as { data: type_func_buyPay }
               if (result.data.error) {
                 $('.container#pay .childContainer button').removeAttr(
                   'disabled'

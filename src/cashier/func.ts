@@ -1,8 +1,16 @@
 //----- レジシステムで使う関数 -----//
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  increment,
+  updateDoc,
+} from 'firebase/firestore'
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase } from '../firebase'
+import { db } from '../firebase'
 import { type_classProceeds, type_forRecord } from '../type'
 
 /**
@@ -40,13 +48,11 @@ const anim = async (before: any, after: any, isR2L = true): Promise<void> => {
  * @param data - 保存するデータ
  */
 const RecordPayment = async (data: type_forRecord): Promise<void> => {
-  const db = firebase.firestore()
-
   // payment_logに保存
-  await db.collection('payment_log').add(data)
+  await addDoc(collection(db, 'payment_log'), data)
 
   // クラスの売り上げに保存
-  const db_data = await db.collection('class_proceeds').doc(classInfo.uid).get()
+  const db_data = await getDoc(doc(db, 'class_proceeds', classInfo.uid))
   const db_menu = (db_data.data() as type_classProceeds).menus
   db_menu.forEach((item) => {
     const dt = data.list.filter((l) => l.name === item.name)[0]
@@ -55,13 +61,10 @@ const RecordPayment = async (data: type_forRecord): Promise<void> => {
       item.amount += dt.amount
     }
   })
-  await db
-    .collection('class_proceeds')
-    .doc(classInfo.uid)
-    .update({
-      menus: db_menu,
-      total: firebase.firestore.FieldValue.increment(data.sum),
-      customers: firebase.firestore.FieldValue.increment(1),
-    })
+  await updateDoc(doc(db, 'class_proceeds', classInfo.uid), {
+    menus: db_menu,
+    total: increment(data.sum),
+    customers: increment(1),
+  })
 }
 export { sleep, anim, RecordPayment }

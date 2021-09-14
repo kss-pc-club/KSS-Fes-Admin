@@ -1,4 +1,4 @@
-import { firebase } from './firebase'
+import { Timestamp } from 'firebase/firestore'
 
 // Void関数
 type type_VoidFunc = () => void
@@ -67,12 +67,12 @@ type type_forRecord = {
 type type_chatSaveData = {
   fromAdmin: boolean
   message: string
-  time: firebase.firestore.Timestamp
+  time: Timestamp
 }
 
 // チャットツールの全保存データ
 type type_chatAllData = {
-  lastUpdate: firebase.firestore.Timestamp
+  lastUpdate: Timestamp
   name: string
   history: type_chatSaveData[]
 }
@@ -93,8 +93,8 @@ type type_func_buyPay = {
 
 // データベースから取り出した生の文化祭開催情報
 type type_FestivalDuration = {
-  start: firebase.firestore.Timestamp
-  end: firebase.firestore.Timestamp
+  start: Timestamp
+  end: Timestamp
 }
 
 // 日付に直した文化祭開催情報

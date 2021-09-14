@@ -1,9 +1,10 @@
 //----- admin/pay_charge メインの処理 -----//
 
+import { httpsCallable } from 'firebase/functions'
 import $ from 'jquery'
 
 import { classInfo } from '../../classInfo'
-import { firebase, onClassInfoLoaded } from '../../firebase'
+import { cloudFunctions, onClassInfoLoaded } from '../../firebase'
 import { type_func_buyPay } from '../../type'
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -36,14 +37,16 @@ window.addEventListener('DOMContentLoaded', () => {
           const chargeAmount = Number($chargeAmount.val())
 
           // Cloud Functionsにリクエストを送信（Ref: /functions/src/index.ts）
-          firebase
-            .functions()
-            .httpsCallable('chargePay')({
-              barcode: String($barcode.val()),
-              chargeAmount: chargeAmount,
-              time: new Date(),
-            })
-            .then((result: { data: type_func_buyPay }) => {
+          httpsCallable(
+            cloudFunctions,
+            'chargePay'
+          )({
+            barcode: String($barcode.val()),
+            chargeAmount: chargeAmount,
+            time: new Date(),
+          })
+            .then((res) => {
+              const result = res as { data: type_func_buyPay }
               if (result.data.error) {
                 // エラーを吐いた場合
                 switch (result.data.message) {

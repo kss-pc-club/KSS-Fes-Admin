@@ -1,9 +1,10 @@
 //----- メニューのデータ更新 -----//
 
+import { doc, getDoc } from 'firebase/firestore'
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase, onClassInfoChanged } from '../firebase'
+import { db, onClassInfoChanged } from '../firebase'
 import { type_classProceeds } from '../type'
 import { ChartFirstDraw } from './chart'
 
@@ -19,9 +20,8 @@ window.addEventListener('DOMContentLoaded', () => {
   let isFirstLoad = true
   onClassInfoChanged(async () => {
     // データベースからデータを読み込む
-    const db = firebase.firestore()
     const data = (
-      await db.collection('class_proceeds').doc(classInfo.uid).get()
+      await getDoc(doc(db, 'class_proceeds', classInfo.uid))
     ).data() as type_classProceeds
 
     const total = {

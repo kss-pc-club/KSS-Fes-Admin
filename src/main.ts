@@ -5,10 +5,11 @@ import './commonFilesLoad'
 import './login'
 import './style'
 
+import { signOut } from 'firebase/auth'
 import $ from 'jquery'
 
 import { classInfo } from './classInfo'
-import { firebase, onClassInfoLoaded } from './firebase'
+import { auth, onClassInfoLoaded } from './firebase'
 import { sleep } from './functions'
 
 if (location.pathname === '/cashier/') {
@@ -32,14 +33,14 @@ window.addEventListener('DOMContentLoaded', () => {
   if (location.pathname === '/') {
     document.querySelector('a#logout')?.addEventListener('click', () => {
       if (confirm('ログアウトしますか？')) {
-        firebase.auth().signOut().catch(console.error)
+        signOut(auth).catch(console.error)
       }
     })
   }
   if (location.pathname === '/admin/') {
     document.querySelector('a#logout')?.addEventListener('click', () => {
       if (confirm('ログアウトしますか？')) {
-        firebase.auth().signOut().catch(console.error)
+        signOut(auth).catch(console.error)
       }
     })
   }

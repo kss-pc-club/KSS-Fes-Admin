@@ -1,8 +1,17 @@
 //----- admin/chat メインの処理 -----//
 
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore'
 import $ from 'jquery'
 
-import { firebase, onClassInfoLoaded } from '../../firebase'
+import { db, onClassInfoLoaded } from '../../firebase'
 import { type_chatAllData } from '../../type'
 import { formatDate, log, scrollBtm } from './func'
 
@@ -15,8 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
     log('ClassInfoLoaded')
 
     // 初期化
-    const chatDB = firebase.firestore().collection('chat')
-    const allDocsData = await chatDB.get()
+    const allDocsData = await getDocs(collection(db, 'chat'))
     allDocsData.forEach((doc) => {
       const saveData = doc.data() as type_chatAllData
 
@@ -79,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // クラスリストのクラスをクリックしたとき
     $('.clsCont').on('click', async function () {
-      const cls = $(this).attr('data-cls')
+      const cls = String($(this).attr('data-cls'))
 
       // すでに表示されているものを非表示にする
       $('main div.list .clsCont.showing').find('p.msg').text('0')
@@ -91,7 +99,9 @@ window.addEventListener('DOMContentLoaded', () => {
       $(this).find('p.msg').text('')
 
       // チャットのデータを読み込み、表示する
-      const chatData = (await chatDB.doc(cls).get()).data() as type_chatAllData
+      const chatData = (
+        await getDoc(doc(db, 'chat', cls))
+      ).data() as type_chatAllData
       for (let i = 0; i < chatData.history.length; i++) {
         const e = chatData.history[i]
         const time = e.time.toDate()
@@ -130,12 +140,12 @@ window.addEventListener('DOMContentLoaded', () => {
       const dateFormat = formatDate(d)
 
       // データベースを更新
-      await chatDB.doc(id).update({
-        lastUpdate: firebase.firestore.Timestamp.fromDate(d),
-        history: firebase.firestore.FieldValue.arrayUnion({
+      await updateDoc(doc(db, 'chat', id), {
+        lastUpdate: Timestamp.fromDate(d),
+        history: arrayUnion({
           fromAdmin: true,
           message: body,
-          time: firebase.firestore.Timestamp.fromDate(d),
+          time: Timestamp.fromDate(d),
         }),
       })
 

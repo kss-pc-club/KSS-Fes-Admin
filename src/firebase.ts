@@ -1,10 +1,9 @@
 //----- Firebase関連の処理 -----//
 
-import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/functions'
-
-import firebase from 'firebase/app'
+import { initializeApp } from 'firebase/app'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore'
+import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 
 import { classInfo } from './classInfo'
 import { firebaseConfig } from './firebaseConfig'
@@ -17,10 +16,11 @@ import {
 } from './type'
 
 // Firebaseを初期化
-firebase.initializeApp(firebaseConfig)
-const auth = firebase.auth()
-const db = firebase.firestore()
-firebase.functions().useEmulator('localhost', 5001)
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const cloudFunctions = getFunctions(app)
+connectFunctionsEmulator(cloudFunctions, 'localhost', 5001)
 
 // クラスの情報が読み込まれた時の処理など
 const isClassInfoLoaded = false
@@ -46,7 +46,7 @@ const onClassInfoChanged = (fn: type_VoidFunc) => {
 }
 
 // ログイン状態が変更されたときの処理
-auth.onAuthStateChanged((user) => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // ログイン状態
 
@@ -93,25 +93,21 @@ auth.onAuthStateChanged((user) => {
     }
 
     // データベース読み込み
-    db.collection('class_info')
-      .doc(user.uid)
-      .onSnapshot((doc) => {
-        const infoData = doc.data() as type_classInfo
-        classInfo.name = infoData.class
-        classInfo.isFood = infoData.isFood
-        classInfo.shop_name = infoData.name
-        classInfo.time = infoData.time
-        menus_info = infoData.menus
-        loadedCheckFn()
-      })
-    db.collection('class_proceeds')
-      .doc(user.uid)
-      .onSnapshot((doc) => {
-        const proceedsData = doc.data() as type_classProceeds
-        classInfo.admin = proceedsData.admin
-        menus_proceeds = proceedsData.menus
-        loadedCheckFn()
-      })
+    onSnapshot(doc(db, 'class_info', user.uid), (doc) => {
+      const infoData = doc.data() as type_classInfo
+      classInfo.name = infoData.class
+      classInfo.isFood = infoData.isFood
+      classInfo.shop_name = infoData.name
+      classInfo.time = infoData.time
+      menus_info = infoData.menus
+      loadedCheckFn()
+    })
+    onSnapshot(doc(db, 'class_proceeds', user.uid), (doc) => {
+      const proceedsData = doc.data() as type_classProceeds
+      classInfo.admin = proceedsData.admin
+      menus_proceeds = proceedsData.menus
+      loadedCheckFn()
+    })
 
     // 権限的なリダイレクト処理
     onClassInfoLoaded(() => {
@@ -134,10 +130,7 @@ auth.onAuthStateChanged((user) => {
   }
 })
 
-// Firebaseの認証にデバイスの言語を利用する
+// Firebaseの認証に日本語を利用する
 auth.languageCode = 'ja'
 
-// ログイン状態の保持期間の設定
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error)
-
-export { firebase, auth, onClassInfoLoaded, onClassInfoChanged }
+export { app, auth, onClassInfoLoaded, onClassInfoChanged, db, cloudFunctions }

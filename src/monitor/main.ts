@@ -1,9 +1,10 @@
 //----- メインの処理 -----//
 
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase, onClassInfoChanged, onClassInfoLoaded } from '../firebase'
+import { db, onClassInfoChanged, onClassInfoLoaded } from '../firebase'
 import {
   type_FestivalDuration,
   type_FestivalDuration_date,
@@ -20,15 +21,11 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // 文化祭の開始・終了時刻を取得し、変更があれば自動で更新
-  firebase
-    .firestore()
-    .collection('festival_duration')
-    .doc('time')
-    .onSnapshot((snapshot) => {
-      const data = snapshot.data() as type_FestivalDuration
-      festival_duration.start = data.start.toDate()
-      festival_duration.end = data.end.toDate()
-    })
+  onSnapshot(doc(db, 'festival_duration', 'time'), (snapshot) => {
+    const data = snapshot.data() as type_FestivalDuration
+    festival_duration.start = data.start.toDate()
+    festival_duration.end = data.end.toDate()
+  })
 
   /**
    * 今は文化祭が始まる前か返します
@@ -167,14 +164,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   onClassInfoLoaded(() => {
-    const info_db = firebase
-      .firestore()
-      .collection('class_info')
-      .doc(classInfo.uid)
-    const proc_db = firebase
-      .firestore()
-      .collection('class_proceeds')
-      .doc(classInfo.uid)
+    const info_db = doc(db, 'class_info', classInfo.uid)
+    const proc_db = doc(db, 'class_proceeds', classInfo.uid)
 
     // 取りあえず現時点でのメニューを保存しておく
     menu_changes = classInfo.menus
@@ -244,7 +235,7 @@ window.addEventListener('DOMContentLoaded', () => {
       $(this).attr('disabled', 'disabled')
       try {
         // データベース更新
-        await info_db.update({
+        await updateDoc(info_db, {
           isFood: classInfo.isFood,
           menus: menu_changes.map((item) => ({
             icon: item.icon,
@@ -257,7 +248,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // 文化祭前なら、文化祭前にしか更新できないほうも更新する
         if (isNowFestivalBefore()) {
-          await proc_db.update({
+          await updateDoc(proc_db, {
             menus: menu_changes.map((item) => ({
               amount: 0,
               customers: 0,

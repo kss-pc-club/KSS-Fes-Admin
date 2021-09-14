@@ -1,9 +1,10 @@
 //----- ログインの処理 -----//
 
 import { Toast } from 'bootstrap'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import $ from 'jquery'
 
-import { firebase } from './firebase'
+import { auth } from './firebase'
 
 window.addEventListener('DOMContentLoaded', () => {
   if (location.pathname === '/login') {
@@ -21,9 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
       $('form button').attr('disabled', 'disabled')
       const email = $('#inputEmail').val() as string
       const pass = $('#inputPassword').val() as string
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, pass)
+      signInWithEmailAndPassword(auth, email, pass)
         .then((cred) => {
           // ログイン成功時（勝手に /index.html に飛ばされる）
         })

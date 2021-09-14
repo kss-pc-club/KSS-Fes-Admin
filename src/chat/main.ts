@@ -1,17 +1,24 @@
 //----- チャットシステムの処理 -----//
 
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore'
 import $ from 'jquery'
 
 import { classInfo } from '../classInfo'
-import { firebase, onClassInfoLoaded } from '../firebase'
+import { db, onClassInfoLoaded } from '../firebase'
 import { type_chatAllData, type_chatSaveData } from '../type'
 import { formatDate, scrollBtm } from './func'
 
 window.addEventListener('DOMContentLoaded', () => {
   onClassInfoLoaded(async () => {
     // データベースから履歴を読み込む
-    const chatDB = firebase.firestore().collection('chat').doc(classInfo.uid)
-    const chatData = ((await chatDB.get()).data() as type_chatAllData).history
+    const chatDB = doc(db, 'chat', classInfo.uid)
+    const chatData = ((await getDoc(chatDB)).data() as type_chatAllData).history
     chatData.sort((a, b) => a.time.seconds - b.time.seconds)
     $('main div.chat div.history').text('')
     for (let i = 0; i < chatData.length; i++) {
@@ -83,13 +90,13 @@ window.addEventListener('DOMContentLoaded', () => {
       const saveData: type_chatSaveData = {
         fromAdmin: false,
         message: msg,
-        time: firebase.firestore.Timestamp.fromDate(d),
+        time: Timestamp.fromDate(d),
       }
 
       // データベースを更新
-      await chatDB.update({
-        lastUpdate: firebase.firestore.Timestamp.fromDate(d),
-        history: firebase.firestore.FieldValue.arrayUnion(saveData),
+      await updateDoc(chatDB, {
+        lastUpdate: Timestamp.fromDate(d),
+        history: arrayUnion(saveData),
       })
 
       // チャット履歴に追加
