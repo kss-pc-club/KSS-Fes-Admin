@@ -31,9 +31,9 @@ const month = [
  * @returns フォーマットされたString
  */
 const formatDate = (d: Date) =>
-  `${month[d.getMonth()]} ${d.getDate()} | ${String(d.getHours()).padEnd(
+  `${month[d.getMonth()]} ${d.getDate()} | ${String(d.getHours()).padStart(
     2,
     '0'
-  )}:${String(d.getMinutes()).padEnd(2, '0')}`
+  )}:${String(d.getMinutes()).padStart(2, '0')}`
 
 export { scrollBtm, month, formatDate }
