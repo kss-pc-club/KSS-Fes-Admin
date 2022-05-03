@@ -16,19 +16,22 @@ window.addEventListener('load', () => {
       alert('メニューを選択してください')
       return
     }
-    void anim(
-      $(this).parents('div.container'),
-      `.container#${$(this).attr('data-next')!}`
-    )
+    const nextContainer = $(this).attr('data-next')
+    if (nextContainer) {
+      void anim($(this).parents('div.container'), `.container#${nextContainer}`)
+    }
   })
 
   // 「前へ」ボタン
   $('.container button#prev').on('click', function () {
-    void anim(
-      $(this).parents('div.container'),
-      `.container#${$(this).attr('data-next')!}`,
-      false
-    )
+    const prevContainer = $(this).attr('data-next')
+    if (prevContainer) {
+      void anim(
+        $(this).parents('div.container'),
+        `.container#${prevContainer}`,
+        false
+      )
+    }
   })
 })
 

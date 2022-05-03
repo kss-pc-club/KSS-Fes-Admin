@@ -64,8 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     for (const k in total) {
       if (total.hasOwnProperty(k)) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        $('p#total').attr(`data-${k}`, (total as any)[k])
+        $('p#total').attr(`data-${k}`, (total as { [key: string]: number })[k])
       }
     }
 

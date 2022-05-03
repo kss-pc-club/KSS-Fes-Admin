@@ -59,12 +59,12 @@ window.addEventListener('DOMContentLoaded', () => {
           $('.container#pay .child-container button').removeAttr('disabled')
         } else {
           // エラーをはかなかった場合
-          const userId = result.data.uid!
+          const userId = result.data.uid
           const time = new Date()
           await RecordPayment({
             isPay: true,
             payAt: classInfo.name,
-            payId: userId,
+            payId: userId ?? 'unknown',
             sum: data.sum,
             time: time,
             list: data.list,

@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const email = $('#inputEmail').val() as string
       const pass = $('#inputPassword').val() as string
       signInWithEmailAndPassword(auth, email, pass)
-        .then((cred) => {
+        .then(() => {
           // ログイン成功時（勝手に /index.html に飛ばされる）
         })
         .catch((err) => {
