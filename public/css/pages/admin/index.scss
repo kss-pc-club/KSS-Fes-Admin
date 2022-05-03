@@ -12,6 +12,15 @@ a.item{
   text-decoration: none;
 }
 
+a.disabled {
+  color: #ccc;
+  cursor:default;
+
+  &:hover {
+    color: #ccc;
+  }
+}
+
 span{
   font-size: 1rem;
 }

@@ -1,2 +1,2 @@
-h1{color:var(--bs-gray-dark)}a.item{display:block;width:100%;height:auto;font-size:1.3rem;color:var(--bs-gray-dark);text-align:center;text-decoration:none}span{font-size:1rem}
+h1{color:var(--bs-gray-dark)}a.item{display:block;width:100%;height:auto;font-size:1.3rem;color:var(--bs-gray-dark);text-align:center;text-decoration:none}a.disabled{color:#ccc;cursor:default}a.disabled:hover{color:#ccc}span{font-size:1rem}
 /*# sourceMappingURL=index.css.map */
