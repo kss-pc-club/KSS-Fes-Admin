@@ -1,38 +1,38 @@
-main{
+main {
   min-height: 100vh;
   overflow: hidden;
   text-align: center;
 
-  input{
+  input {
     font-size: 24px;
     text-align: center;
     border: 0;
     border-bottom: 1px solid #aaa;
     outline: 0;
 
-    &:not(:valid){
+    &:not(:valid) {
       border-bottom: 1px solid #f00;
     }
   }
 
-  .container{
+  .container {
     position: relative;
     width: calc(100vw - 2em);
     height: calc(100vh - 5.5em - 4em);
 
-    &:not(.showing){
+    &:not(.showing) {
       display: none !important;
     }
 
-    .childContainer{
+    .childContainer {
       position: absolute;
       top: 50%;
       left: 50%;
       width: calc(100vw - 3rem);
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
     }
 
-    footer{
+    footer {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -43,45 +43,42 @@ main{
       font-size: 1.5em;
       box-shadow: 0 0 10px 0 #aaa;
 
-      *{ margin: 0; }
+      * { margin: 0; }
     }
 
-
-    &#cash{
-
-      div{
+    &#cash {
+      div {
         width: 300px;
         margin: 16px auto;
         font-size: 22px;
       }
 
-      p#sum{
+      p#sum {
         margin: 16px;
         font-size: 24px;
 
-        &::after{content: "円のお支払い";}
+        &::after { content: "円のお支払い"; }
       }
     }
 
-    &#pay{
-
-      div.code{
+    &#pay {
+      div.code {
         width: 300px;
         margin: 16px auto;
+
         // font-size: 22px;
       }
 
-      p#sum{
+      p#sum {
         margin: 16px;
         font-size: 24px;
 
-        &::after{content: "円のお支払い";}
+        &::after { content: "円のお支払い"; }
       }
     }
 
-    &#menu{
-
-      .item{
+    &#menu {
+      .item {
         display: grid;
         grid-template-areas: ". ico _name . price num total .";
         grid-template-rows: 48px;
@@ -91,12 +88,12 @@ main{
         height: 48px;
         margin: 16px;
 
-        p{
+        p {
           margin: auto;
           font-size: 24px;
         }
 
-        img{
+        img {
           grid-area: ico;
           width: 48px;
           height: 48px;
@@ -105,31 +102,31 @@ main{
           box-shadow: 0 0 10px 0 #aaa;
         }
 
-        p.name{ grid-area: _name; }
+        p.name { grid-area: _name; }
 
-        p.price{ grid-area: price; }
+        p.price { grid-area: price; }
 
-        p.price::before{ content: "￥"; }
+        p.price::before { content: "￥"; }
 
-        p.price::after{
+        p.price::after {
           font-size: 16px;
           content: " x";
         }
 
-        input{
+        input {
           grid-area: num;
         }
 
-        p.total{ grid-area: total; }
+        p.total { grid-area: total; }
 
-        p.total::before{ content: "個 = ￥"; }
+        p.total::before { content: "個 = ￥"; }
       }
 
-      footer p.sum{
+      footer p.sum {
         grid-area: txt;
         font-size: 32px;
 
-        &::before{ content: "計 ￥"; }
+        &::before { content: "計 ￥"; }
       }
     }
   }

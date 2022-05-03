@@ -1,8 +1,8 @@
-h1{
+h1 {
   color: var(--bs-gray-dark);
 }
 
-a.item{
+a.item {
   display: block;
   width: 100%;
   height: auto;
@@ -14,13 +14,13 @@ a.item{
 
 a.disabled {
   color: #ccc;
-  cursor:default;
+  cursor: default;
 
   &:hover {
     color: #ccc;
   }
 }
 
-span{
+span {
   font-size: 1rem;
 }

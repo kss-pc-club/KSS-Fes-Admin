@@ -1,43 +1,42 @@
-main{
+main {
   display: grid;
   grid-template-areas: "title title title" "lft lft rgt" "btn btn btn";
   grid-template-rows: auto auto auto;
-  grid-template-columns: repeat(3,calc((100% - 3em) / 3));
+  grid-template-columns: repeat(3, calc((100% - 3em) / 3));
   gap: 1em;
 }
 
-@media (max-width: 770px){
-
-  main{
+@media (max-width: 770px) {
+  main {
     grid-template-areas: "title" "lft" "rgt" "btn";
     grid-template-columns: 100%;
   }
 }
 
-.topContainer{grid-area: title;}
+.topContainer { grid-area: title; }
 
-.leftContainer{grid-area: lft;}
+.leftContainer { grid-area: lft; }
 
-.rightContainer{grid-area: rgt;}
+.rightContainer { grid-area: rgt; }
 
-.bottomContainer{grid-area: btn;}
+.bottomContainer { grid-area: btn; }
 
-.input-group{
+.input-group {
   max-width: 600px;
   margin: auto;
 }
 
-button.dropdown-toggle img{
+button.dropdown-toggle img {
   width: 2em;
   height: 2em;
 }
 
-ul.dropdown-menu li img{
+ul.dropdown-menu li img {
   width: 2em;
   height: 2em;
 }
 
-.circle{
+.circle {
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -45,18 +44,18 @@ ul.dropdown-menu li img{
   border: 1px solid var(--bs-gray);
   border-radius: 50%;
 
-  &.red-circle{ background-color: #f00; }
+  &.red-circle { background-color: #f00; }
 
-  &.yellow-circle{ background-color: #ff0; }
+  &.yellow-circle { background-color: #ff0; }
 
-  &.green-circle{ background-color: #080; }
+  &.green-circle { background-color: #080; }
 }
 
-div.previewsection{
+div.previewsection {
   display: grid;
   grid-template-areas: "cls cls" "shop shop" "time ico";
   grid-template-rows: 10% 40% 48%;
-  grid-template-columns: repeat(2,50%);
+  grid-template-columns: repeat(2, 50%);
   gap: 1%;
   width: 100%;
   height: calc(var(--size) * 1.5);
@@ -66,88 +65,88 @@ div.previewsection{
 
   --size: calc(((100vh - 122px) * 0.48) / 1.5);
 
-  p{
+  p {
     width: 100%;
     height: 100%;
     margin: 0;
     text-align: center;
   }
 
-  p.cls{
+  p.cls {
     grid-area: cls;
-    font-size: calc(var(--size) * 0.10);
+    font-size: calc(var(--size) * 0.1);
   }
 
-  p.shop{
+  p.shop {
     grid-area: shop;
     font-size: calc(var(--size) * 0.15);
     white-space: pre-wrap;
   }
 
-  p.time{
+  p.time {
     grid-area: time;
-    font-size: calc(var(--size) * 0.30);
+    font-size: calc(var(--size) * 0.3);
 
-    &::after{
+    &::after {
       display: block;
       margin-right: 20px;
-      font-size: calc(var(--size) * 0.10);
+      font-size: calc(var(--size) * 0.1);
       text-align: right;
       content: "分待ち";
     }
   }
 
-  div.icons{
+  div.icons {
     display: grid;
     grid-area: ico;
     gap: 12px;
     width: 100%;
     height: 100%;
 
-    div:nth-child(1){ grid-area: i1; }
+    div:nth-child(1) { grid-area: i1; }
 
-    div:nth-child(2){ grid-area: i2; }
+    div:nth-child(2) { grid-area: i2; }
 
-    div:nth-child(3){ grid-area: i3; }
+    div:nth-child(3) { grid-area: i3; }
 
-    div:nth-child(4){ grid-area: i4; }
+    div:nth-child(4) { grid-area: i4; }
 
-    div:nth-child(5){ grid-area: i5; }
+    div:nth-child(5) { grid-area: i5; }
 
-    --row: calc(var(--size) * 0.30);
+    --row: calc(var(--size) * 0.3);
     --col: calc(var(--size) * 0.19);
 
-    &[data-num="1"]{
+    &[data-num="1"] {
       grid-template-areas: ". . ." ". i1 ." ". . .";
       grid-template-rows: 1fr var(--row) 1fr;
       grid-template-columns: 1fr 1fr 1fr;
     }
 
-    &[data-num="2"]{
+    &[data-num="2"] {
       grid-template-areas: ". ." "i1 i2" ". .";
       grid-template-rows: 1fr var(--row) 1fr;
       grid-template-columns: 1fr  1fr;
     }
 
-    &[data-num="3"]{
+    &[data-num="3"] {
       grid-template-areas: ". . . . ." "i1 i1 . i2 i2" ". i3 i3 i3 ." ". . . . .";
       grid-template-rows: 1fr var(--row) var(--row) 1fr;
       grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
     }
 
-    &[data-num="4"]{
+    &[data-num="4"] {
       grid-template-areas: ". ." "i1 i2" "i3 i4" " . .";
       grid-template-rows: 1fr var(--row) var(--row) 1fr;
       grid-template-columns: 1fr 1fr;
     }
 
-    &[data-num="5"]{
+    &[data-num="5"] {
       grid-template-areas: ". . . . . ." "i1 i1 i2 i2 i3 i3" ". i4 i4 i5 i5 ." ". . . . . .";
       grid-template-rows: 1fr var(--row) var(--row) 1fr;
       grid-template-columns: repeat(6, 1fr);
     }
 
-    img{
+    img {
       display: block;
       width: var(--col);
       max-width: 100%;
@@ -157,38 +156,38 @@ div.previewsection{
       border-radius: 30%;
       box-shadow: 0 0 5px 0 #aaa;
 
-      &[data-status="op"] + p::before{
+      &[data-status="op"] + p::before {
         color: #080;
         content: "販売中";
       }
 
-      &[data-status="sh"] + p::before{
+      &[data-status="sh"] + p::before {
         color: #ea0;
         content: "品薄";
       }
 
-      &[data-status="so"] + p::before{
+      &[data-status="so"] + p::before {
         color: #e00;
         content: "品切れ";
       }
 
-      &[data-status="no"] + p::before{
+      &[data-status="no"] + p::before {
         color: #080;
         content: "営業中";
       }
 
-      &[data-status="pa"] + p::before{
+      &[data-status="pa"] + p::before {
         color: #ea0;
         content: "休憩中";
       }
 
-      &[data-status="en"] + p::before{
+      &[data-status="en"] + p::before {
         color: #e00;
         content: "終了";
       }
     }
 
-    p{
+    p {
       display: block;
       margin: 0;
       font-size: 1.3em;
