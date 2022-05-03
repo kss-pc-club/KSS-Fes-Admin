@@ -13,7 +13,7 @@ main {
     // text-align: center;
     grid-area: _list;
 
-    .clsCont {
+    .cls-cont {
       display: grid;
       grid-template-areas: "cls n";
       grid-template-columns: 1fr 24px;
@@ -67,7 +67,7 @@ main {
       padding: 8px;
       overflow-y: scroll;
 
-      .msgCont {
+      .msg-cont {
         margin: 8px 4px;
         overflow: hidden;
 

@@ -10,15 +10,15 @@ import { data } from './menu'
 
 window.addEventListener('DOMContentLoaded', () => {
   // 「決済」ボタン
-  $('.container#pay .childContainer button').on('click', function () {
+  $('.container#pay .child-container button').on('click', function () {
     // ボタンを無効化
-    $('.container#pay .childContainer button').attr('disabled', 'disabled')
+    $('.container#pay .child-container button').attr('disabled', 'disabled')
     const e = $('.container#pay input')
 
     // 入力されたバーコードが13文字ではないならreturn
     if (String(e.val()).length !== 13) {
       alert('バーコードの形式が正しくないようです。再読み込みしてください。')
-      $('.container#pay .childContainer button').removeAttr('disabled')
+      $('.container#pay .child-container button').removeAttr('disabled')
       return
     }
 
@@ -34,7 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const result = res as { data: type_func_readPay }
         // エラーを吐いたとき
         if (result.data.error) {
-          $('.container#pay .childContainer button').removeAttr('disabled')
+          $('.container#pay .child-container button').removeAttr('disabled')
           switch (result.data.message) {
             case 'not logged in':
               alert('ログインしていないようです。再度ログインしてください。')
@@ -56,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
               void anim('.container#pay', '.container#menu', false)
               break
           }
-          $('.container#pay .childContainer button').removeAttr('disabled')
+          $('.container#pay .child-container button').removeAttr('disabled')
         } else {
           // エラーをはかなかった場合
           const userId = result.data.uid!
@@ -83,7 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
             .then((res) => {
               const result = res as { data: type_func_buyPay }
               if (result.data.error) {
-                $('.container#pay .childContainer button').removeAttr(
+                $('.container#pay .child-container button').removeAttr(
                   'disabled'
                 )
                 alert('何か問題が発生したようです。もう一度お試しください。')

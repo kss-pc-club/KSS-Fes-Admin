@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const time = e.time.toDate()
       const dateFormat = formatDate(time)
       $('main div.chat div.history').append(
-        `<div class="msgCont"><div class="${
+        `<div class="msg-cont"><div class="${
           e.fromAdmin ? 'rec' : 'send'
         }"><p class="msg">${
           e.message
@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // チャットの履歴に追加
       $('main div.chat div.history').append(
-        `<div class="msgCont"><div class="rec"><p class="msg">${String(
+        `<div class="msg-cont"><div class="rec"><p class="msg">${String(
           e.data
         )}</p><p class="time">${dateFormat}</p></div></div>`
       )
@@ -101,7 +101,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // チャット履歴に追加
       $('main div.chat div.history').append(
-        `<div class="msgCont"><div class="send"><p class="msg">${msg}</p><p class="time">${dateFormat}</p></div></div>`
+        `<div class="msg-cont"><div class="send"><p class="msg">${msg}</p><p class="time">${dateFormat}</p></div></div>`
       )
 
       // WebSocketで送信

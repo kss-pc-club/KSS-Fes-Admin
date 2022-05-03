@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // メニュー追加
       document
-        .querySelector('.container#menu .childContainer')
+        .querySelector('.container#menu .child-container')
         ?.appendChild(item)
 
       // データのほうにも追加
@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // メニューの個数が変更されたときの処理
-    $('.container#menu .childContainer .item').each(function () {
+    $('.container#menu .child-container .item').each(function () {
       $(this)
         .find('input')
         .on('change', function () {

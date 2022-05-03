@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // クラスを表示する
       $('main div.list').append(
-        `<div class="clsCont" data-cls=${doc.id}><p class="cls">${saveData.name}</p><p class="msg">0</p></div>`
+        `<div class="cls-cont" data-cls=${doc.id}><p class="cls">${saveData.name}</p><p class="msg">0</p></div>`
       )
 
       // WebSocket初期化
@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded', () => {
         log(`Message from ${saveData.name} Received`)
 
         // 「読んでない」通知を+1する
-        const list = $(`main div.list .clsCont[data-cls="${doc.id}"]`)
+        const list = $(`main div.list .cls-cont[data-cls="${doc.id}"]`)
         const unreadNotify = list.find('p.msg')
         unreadNotify.text(Number(unreadNotify.text()) + 1)
         if (list.hasClass('showing')) {
@@ -63,7 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const d = new Date()
           const dateFormat = formatDate(d)
           $('main div.chat div.history').append(
-            `<div class="msgCont"><div class="rec"><p class="msg">${String(
+            `<div class="msg-cont"><div class="rec"><p class="msg">${String(
               k.data
             )}</p><p class="time">${dateFormat}</p></div></div>`
           )
@@ -86,16 +86,16 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     // クラスリストのクラスをクリックしたとき
-    $('.clsCont').on('click', async function () {
+    $('.cls-cont').on('click', async function () {
       const cls = String($(this).attr('data-cls'))
 
       // すでに表示されているものを非表示にする
-      $('main div.list .clsCont.showing').find('p.msg').text('0')
-      $('main div.list .clsCont.showing').removeClass('showing')
+      $('main div.list .cls-cont.showing').find('p.msg').text('0')
+      $('main div.list .cls-cont.showing').removeClass('showing')
 
       // クリックされたものを表示する
       $(this).addClass('showing')
-      $('main .chat .history .msgCont').remove()
+      $('main .chat .history .msg-cont').remove()
       $(this).find('p.msg').text('')
 
       // チャットのデータを読み込み、表示する
@@ -107,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const time = e.time.toDate()
         const dateFormat = formatDate(time)
         $('main div.chat div.history').append(
-          `<div class="msgCont"><div class="${
+          `<div class="msg-cont"><div class="${
             e.fromAdmin ? 'send' : 'rec'
           }"><p class="msg">${String(
             e.message
@@ -131,7 +131,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // 送信ボタンがクリックされたとき
     $('.type button').on('click', async function () {
       // クラス情報を取得
-      const id = $('.clsCont.showing').attr('data-cls')
+      const id = $('.cls-cont.showing').attr('data-cls')
       const body = String($('.type input').val())
       if (!body || !id) {
         return
@@ -151,7 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // チャット履歴に追加
       $('main div.chat div.history').append(
-        `<div class="msgCont"><div class="send"><p class="msg">${body}</p><p class="time">${dateFormat}</p></div></div>`
+        `<div class="msg-cont"><div class="send"><p class="msg">${body}</p><p class="time">${dateFormat}</p></div></div>`
       )
 
       // WebSocketで送信

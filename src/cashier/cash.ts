@@ -13,9 +13,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const c = data.sum - Number($(this).val())
     $(this).parent('div.rec').next().find('input').val(Math.abs(c))
     if (c <= 0) {
-      $('.container#cash .childContainer button').removeAttr('disabled')
+      $('.container#cash .child-container button').removeAttr('disabled')
     } else {
-      $('.container#cash .childContainer button').attr('disabled', 'disabled')
+      $('.container#cash .child-container button').attr('disabled', 'disabled')
     }
     $(this)
       .parent('div.rec')
@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   // 決済保存ボタン
-  $('.container#cash .childContainer button').on('click', async function () {
+  $('.container#cash .child-container button').on('click', async function () {
     $(this).attr('disabled', 'disabled')
     await RecordPayment({
       isPay: false,

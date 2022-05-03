@@ -13,13 +13,13 @@ main {
   }
 }
 
-.topContainer { grid-area: title; }
+.top-container { grid-area: title; }
 
-.leftContainer { grid-area: lft; }
+.left-container { grid-area: lft; }
 
-.rightContainer { grid-area: rgt; }
+.right-container { grid-area: rgt; }
 
-.bottomContainer { grid-area: btn; }
+.bottom-container { grid-area: btn; }
 
 .input-group {
   max-width: 600px;

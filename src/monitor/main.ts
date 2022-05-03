@@ -195,7 +195,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     // メニュー追加
-    $('.leftContainer button#add').on('click', function () {
+    $('.left-container button#add').on('click', function () {
       // 文化祭が始まる前のみ変更可能
       if (!isNowFestivalBefore()) {
         alert('追加は文化祭開始前のみ可能です。')
