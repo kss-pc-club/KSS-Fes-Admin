@@ -94,6 +94,11 @@ onAuthStateChanged(auth, (user) => {
 
     // データベース読み込み
     onSnapshot(doc(db, 'class_info', user.uid), (doc) => {
+      if (!doc.exists()) {
+        // データがない場合(admin)、データ構築を飛ばす
+        loadedCheckFn()
+        return
+      }
       const infoData = doc.data() as type_classInfo
       classInfo.name = infoData.class
       classInfo.isFood = infoData.isFood
