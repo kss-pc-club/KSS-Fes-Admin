@@ -8,6 +8,10 @@ const availableIconsList: { [key: string]: string } = {
   potato: 'フライドポテト',
   tonkotsu: '豚骨ラーメン',
   unagi: 'うな重',
+  crape: 'クレープ',
+  drink: 'ドリンク',
+  kakigoori: 'かき氷',
+  wataame: 'わたあめ',
 }
 
 export { availableIconsList }
