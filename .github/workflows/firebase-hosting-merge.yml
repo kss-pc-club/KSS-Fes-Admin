@@ -2,7 +2,7 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
-'on':
+"on":
   push:
     branches:
       - main
@@ -17,9 +17,26 @@ jobs:
           echo ${KSS_PAY_SECRET} | base64 -d > ./functions/src/service_key.json
         env:
           KSS_PAY_SECRET: ${{ secrets.KSS_PAY_SECRET }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install deps
+        run: yarn
+      - name: Build
+        run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KSS_FESTIVAL_ADMIN }}'
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KSS_FESTIVAL_ADMIN }}"
           channelId: live
           projectId: kss-festival-admin
