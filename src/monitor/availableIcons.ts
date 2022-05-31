@@ -12,6 +12,8 @@ const availableIconsList: { [key: string]: string } = {
   drink: 'ドリンク',
   kakigoori: 'かき氷',
   wataame: 'わたあめ',
+  yakisoba: '焼きそば',
+  frankfurt: 'フランクフルト',
 }
 
 export { availableIconsList }
