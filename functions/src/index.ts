@@ -10,14 +10,17 @@ import {
 } from './type'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
-const ServiceAccount = require('./service_key.json')
+const ServiceAccount = require('./service_key.json') as string
 
 admin.initializeApp({ credential: admin.credential.cert(ServiceAccount) })
 
 const returnError = (msg: string) => ({ error: true, message: msg })
 
 export const readPay = functions.https.onCall(
-  async (data: type_readPayReqData, context) => {
+  async (
+    data: type_readPayReqData,
+    context: functions.https.CallableContext
+  ) => {
     // リクエストに必要なデータが十分か確かめる
     if (!context.auth?.uid) {
       return returnError('not logged in')
@@ -58,7 +61,10 @@ export const readPay = functions.https.onCall(
 )
 
 export const buyPay = functions.https.onCall(
-  async (data: type_buyPayReqData, context) => {
+  async (
+    data: type_buyPayReqData,
+    context: functions.https.CallableContext
+  ) => {
     // リクエストに必要なデータが十分か確かめる
     if (!context.auth?.uid) {
       return returnError('not logged in')
@@ -107,7 +113,10 @@ export const buyPay = functions.https.onCall(
 )
 
 export const chargePay = functions.https.onCall(
-  async (data: type_chargePayReqData, context) => {
+  async (
+    data: type_chargePayReqData,
+    context: functions.https.CallableContext
+  ) => {
     // リクエストに必要なデータが十分か確かめる
     if (!context.auth?.uid) {
       return returnError('not logged in')
