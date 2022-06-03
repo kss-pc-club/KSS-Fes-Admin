@@ -6,6 +6,8 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
+  query,
   Timestamp,
   updateDoc,
 } from 'firebase/firestore'
@@ -24,7 +26,9 @@ window.addEventListener('DOMContentLoaded', () => {
     log('ClassInfoLoaded')
 
     // 初期化
-    const allDocsData = await getDocs(collection(db, 'chat'))
+    const allDocsData = await getDocs(
+      query(collection(db, 'chat'), orderBy('name', 'asc'))
+    )
     allDocsData.forEach((doc) => {
       const saveData = doc.data() as type_chatAllData
 
@@ -63,9 +67,12 @@ window.addEventListener('DOMContentLoaded', () => {
           const d = new Date()
           const dateFormat = formatDate(d)
           $('main div.chat div.history').append(
-            `<div class="msg-cont"><div class="rec"><p class="msg">${String(
-              k.data
-            )}</p><p class="time">${dateFormat}</p></div></div>`
+            `<div class="msg-cont">
+              <div class="rec">
+                <p class="msg">${String(k.data)}</p>
+                <p class="time">${dateFormat}</p>
+              </div>
+            </div>`
           )
           scrollBtm()
         }
@@ -107,11 +114,12 @@ window.addEventListener('DOMContentLoaded', () => {
         const time = e.time.toDate()
         const dateFormat = formatDate(time)
         $('main div.chat div.history').append(
-          `<div class="msg-cont"><div class="${
-            e.fromAdmin ? 'send' : 'rec'
-          }"><p class="msg">${String(
-            e.message
-          )}</p><p class="time">${dateFormat}</p></div></div>`
+          `<div class="msg-cont">
+            <div class="${e.fromAdmin ? 'send' : 'rec'}">
+              <p class="msg">${String(e.message)}</p>
+              <p class="time">${dateFormat}</p>
+            </div>
+          </div>`
         )
       }
       scrollBtm()
