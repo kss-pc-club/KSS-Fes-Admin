@@ -25,6 +25,11 @@ main {
       border-radius: 5px;
       box-shadow: 0 4px 8px 0 #aaa;
 
+      &.showing {
+        color: #fff;
+        background: var(--bs-secondary);
+      }
+
       p.cls {
         grid-area: cls;
       }
