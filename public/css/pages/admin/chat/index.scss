@@ -4,7 +4,7 @@ main {
   grid-template-rows: 1fr 48px;
   grid-template-columns: 300px 600px 1fr;
   gap: 8px;
-  height: calc(100vh - 32px);
+  height: calc(100vh - 32px - 2em);
   padding: 16px;
   margin: auto;
   border-radius: 8px;
@@ -12,6 +12,8 @@ main {
   .list {
     // text-align: center;
     grid-area: _list;
+    height: 100%;
+    overflow-y: auto;
 
     .cls-cont {
       display: grid;
